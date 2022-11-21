@@ -7,16 +7,13 @@
     <header>
         <h1><a href="/">Django Girls Blog</a></h1>
     </header>
-    <article>
-        <time>published: 21.11.2022, 8:15</time>
-        <h2><a href="">My first post</a></h2>
-        <p>Hello there! My name is Alex!</p>
-    </article>
-    <article>
-        <time>published: 21.11.2022, 8:20</time>
-        <h2><a href="">My second post</a></h2>
-        <p>What is your name?</p>
-    </article>
-    
+    {% for post in posts %}
+        <article>
+            <time>published: {{ post.published_date }}</time>
+            <h2><a href="">{{ post.title }}</a></h2>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </article>
+    {% endfor %}
+
 </body>
 </html>
