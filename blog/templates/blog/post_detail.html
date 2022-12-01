@@ -7,6 +7,9 @@
                 <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
                     {% include './icons/pencil-fill.svg' %}
                 </a>
+                <a class="btn btn-secondary" href="{% url 'comment' pk=post.pk %}">
+                    {% include './icons/card-text.svg' %}
+                </a>
             {% endif %}
         </aside>
         {% if post.published_date %}
@@ -16,5 +19,24 @@
         {% endif %}
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
+        {% for each_comment in comments %}
+            <div class="card">
+                <div class="card-header">
+                    <strong>{{ each_comment.author }}</strong>
+                    <span class="float-end">
+                        {{ each_comment.published_date }}
+                        <a class="btn btn-secondary" href="{% url 'comment_delete' pk=each_comment.pk %}">
+                            {% include './icons/trash.svg' %}
+                        </a>
+                        <a class="btn btn-secondary" href="{% url 'comment_edit' pk=each_comment.pk %}">
+                            {% include './icons/card-text.svg' %}
+                        </a>
+
+                    </span>
+                </div>
+                <div class="card-body"><p>{{ each_comment.text }}</p></div>
+            </div><br>
+        {% endfor %}
     </article>
 {% endblock %}
+
