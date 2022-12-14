@@ -67,15 +67,17 @@ h1, h2, h3, h4 {
     float: right;
 }
 
+.btn,
 .btn-secondary,
-.btn-secondary:visited {
+.btn-secondary:visited,
+.btn-secondary:active {
     color: navy;
     background: none;
     border-color: navy;
 }
 
 .btn-secondary:hover {
-    color: #FFFFFF;
+    color: white;
     background-color: navy;
 }
 
@@ -92,4 +94,8 @@ h1, h2, h3, h4 {
     border-color: navy;
     border-width: thin;
     color: slateblue;
+}
+
+.navbar-brand {
+    color: white;
 }
