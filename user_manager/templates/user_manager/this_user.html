@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1 style="color: black">User Profile:</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Birthdate</th>
+                <th scope="col">Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{this_current_user.user.first_name}}</td>
+                <td>{{this_current_user.user.last_name}}</td>
+                <td>{{this_current_user.user.username}}</td>
+                <td>{{this_current_user.user.email}}</td>
+                <td>{{this_current_user.gender}}</td>
+                <td>{{this_current_user.birthday}}</td>
+                <td>{{this_current_user.phone_number}}</td>
+                <td><a class="btn btn-secondary float-end" href="{% url 'user_profile_edit' %}">
+                    {% include 'blog/icons/pencil-fill.svg' %}
+                </a></td>
+            </tr>
+        </tbody>
+{% endblock %}

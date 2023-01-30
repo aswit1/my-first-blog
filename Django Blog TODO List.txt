@@ -1,0 +1,21 @@
+TODO:
+
+edit your own comments only
+edit your own posts only
+delete your own comments only
+
+Superuser can do anything
+
+Messages -- everytime you do something to give you feedback (successfully logged in, etc.)
+
+Protect views -- add authentication to views
+
+Add authentication decorator to all views that need it
+
+for comments -- show original post time and an edited by time
+
+reset/change users passwords 
+
+edit user details form
+
+site administrator able to delete users

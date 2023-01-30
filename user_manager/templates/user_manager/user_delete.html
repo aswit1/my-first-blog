@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h2>Are you sure you want to delete {{ this_user }}?</h2>
+    <form method="post">{%  csrf_token %}
+        <input type="submit" class="btn btn-danger" style="color: red" value="Delete">
+        <a class="btn btn-secondary" href="{% url 'all_users' %}">Cancel</a>
+    </form>
+{% endblock %}
