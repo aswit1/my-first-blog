@@ -80,6 +80,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 USE_SQLITE=os.getenv("USE_SQLITE")
+
+ARE_YOU_ALIVE="NO"
+
 if USE_SQLITE=='YES':
     DATABASES = {
         'default': {
@@ -87,6 +90,8 @@ if USE_SQLITE=='YES':
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    ARE_YOU_ALIVE="YEP"
+
 else:
     DATABASES = {
         'default': {
