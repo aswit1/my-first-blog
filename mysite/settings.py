@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 USE_SQLITE=os.getenv("USE_SQLITE")
 
-ARE_YOU_ALIVE="NO"
+
 MAX_CONN_AGE = 600
 # if USE_SQLITE=='YES':
 DATABASES = {
@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-    ARE_YOU_ALIVE="YEP"
+
 if "DATABASE_URL" in os.environ:
     # Configure Django for DATABASE_URL environment variable.
     DATABASES["default"] = dj_database_url.config(
