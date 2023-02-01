@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -82,7 +84,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 USE_SQLITE=os.getenv("USE_SQLITE")
 
 ARE_YOU_ALIVE="NO"
-
+MAX_CONN_AGE = 600
 if USE_SQLITE=='YES':
     DATABASES = {
         'default': {
@@ -91,18 +93,26 @@ if USE_SQLITE=='YES':
         }
     }
     ARE_YOU_ALIVE="YEP"
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=MAX_CONN_AGE, ssl_require=True)
 
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'mydatabase',
-            'USER': 'mydatabaseuser',
-            'PASSWORD': 'mypassword',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+    # Enable test database if found in CI environment.
+    if "CI" in os.environ:
+        DATABASES["default"]["TEST"] = DATABASES["default"]
+
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'mydatabase',
+#             'USER': 'mydatabaseuser',
+#             'PASSWORD': 'mypassword',
+#             'HOST': '127.0.0.1',
+#             'PORT': '5432',
+#         }
+#     }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
