@@ -192,3 +192,5 @@ CACHES = {
         'LOCATION': 'my_cache_table',
     }
 }
+
+CELERY_BROKER_URL = 'amqp://guest:guest@CLOUDAMQP:5672//'
