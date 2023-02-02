@@ -193,4 +193,5 @@ CACHES = {
     }
 }
 
-CELERY_BROKER_URL = 'amqps://orjnudnb:vLP9E_M9jiKfqekXKH9RfWvNC2p_4Ae_@shark.rmq.cloudamqp.com/orjnudnb'
+if IS_HEROKU:
+    CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
