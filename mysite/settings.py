@@ -195,3 +195,5 @@ CACHES = {
 
 if IS_HEROKU:
     CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
+SITE_URL = os.getenv('SITE_URL')
