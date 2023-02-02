@@ -193,4 +193,4 @@ CACHES = {
     }
 }
 
-CELERY_BROKER_URL = 'amqp://guest:guest@CLOUDAMQP:5672//'
+CELERY_BROKER_URL = 'amqps://orjnudnb:vLP9E_M9jiKfqekXKH9RfWvNC2p_4Ae_@shark.rmq.cloudamqp.com/orjnudnb'
