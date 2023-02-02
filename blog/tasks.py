@@ -57,8 +57,13 @@ def new_post_email(email_address):
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=email_address,
         subject='New Posts',
-        html_content=this_message
+        # html_content=this_message
     )
+    message.dynamic_template_data = {
+        "new_posts": this_message
+    }
+    message.template_id = "d-3ad4b311d85241b0a0d3c02a3741eac0"
+
     try:
         sg = SendGridAPIClient(settings.EMAIL_HOST_PASSWORD)
         response = sg.send(message)
