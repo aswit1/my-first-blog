@@ -21,7 +21,7 @@ def all_users(request):
     return render(request, 'user_manager/all_users.html', {'user_profiles': user_profiles})
 
 def this_user(request):
-    this_current_user = UserProfile.objects.get(user=request.user)
+    this_current_user, created = UserProfile.objects.get_or_create(user=request.user)
     return render(request, 'user_manager/this_user.html', {'this_current_user': this_current_user})
 
 def user_profile_edit(request):
