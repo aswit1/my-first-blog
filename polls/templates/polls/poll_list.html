@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+     {% if user.is_authenticated %}
+          <a href="{% url 'poll_createv2' %}" class="btn btn-secondary justify-content-end">
+              Add New Poll
+          </a>
+     {% endif %}
+    {% for poll in polls %}
+        <article class="poll">
+            <time class="date">
+                {{ poll.published_date }}
+            </time>
+            <h2><a href="{% url 'poll_detailv2' pk=poll.pk %}">{{ poll.title }}</a></h2>
+            <p>{{ poll.text|linebreaksbr }}</p>
+        </article>
+    {% endfor %}
+{% endblock %}}

@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Vote on {{ poll.title }}</h1>
+     {% if user.is_authenticated %}
+          <form method="POST" class="post-form">{% csrf_token %}
+              <select name="option">
+                  {% for option in options %}
+                      <option value="{{ option.pk }}">{{ option.description }}</option>
+                  {% endfor %}
+              </select>
+            <button type="submit" class="save btn btn-secondary">Save</button>
+          </form>
+     {% endif %}
+{% endblock %}}

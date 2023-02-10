@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_manager',
     'django_celery_results',
     'django_celery_beat',
+    'polls',
 ]
 
 MIDDLEWARE = [
