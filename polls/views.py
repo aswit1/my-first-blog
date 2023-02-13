@@ -15,7 +15,8 @@ def poll_vote(request, pk):
     poll = get_object_or_404(Pollv2, pk=pk)
     options = PollQ.objects.filter(poll=poll)
     if request.method == "POST":
-        option = request.POST.get("option")
+        print(request.POST)
+        option = request.POST["option"]
         option_object = get_object_or_404(PollQ, pk=int(option))
         option_object.votes += 1
         option_object.save()
