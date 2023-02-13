@@ -11,6 +11,8 @@ class Post(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     edit_date = models.DateTimeField(null=True, blank=True)
     new_post = models.BooleanField(default=True)
+    blog_post = models.BooleanField(default=False)
+
 
     def publish(self):
         self.published_date = timezone.now()

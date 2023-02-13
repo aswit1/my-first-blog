@@ -3,7 +3,7 @@ from django.utils import timezone
 from user_manager.models import Weather
 from .models import Post, PostComment
 from django.shortcuts import render, get_object_or_404
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, AlexPostForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -16,9 +16,12 @@ def manual_new_post_task(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(blog_post=False).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
+def alex_post_list(request):
+    posts = Post.objects.filter(blog_post=True).order_by('published_date')
+    return render(request, 'blog/alex_post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -29,14 +32,17 @@ def post_detail(request, pk):
 @login_required()
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = AlexPostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
-    form = PostForm()
+    if request.user.username == 'aswit':
+        form = AlexPostForm()
+    else:
+        form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
