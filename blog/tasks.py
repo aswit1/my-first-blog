@@ -46,6 +46,9 @@ def update_emails():
             email_user_list.append(user.user.email)
     for each_user in email_user_list:
         new_post_email(each_user)
+    for post in new_posts:
+        post.new_post = False
+        post.save()
 
 
 def new_post_email(email_address):
@@ -74,9 +77,6 @@ def new_post_email(email_address):
         print(f"Response Headers: {headers} ")
         print("Message Sent!")
 
-        for post in new_posts:
-            post.new_post=False
-            post.save()
     except Exception as e:
         print("Error: {0}".format(e))
 
