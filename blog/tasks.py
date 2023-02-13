@@ -55,7 +55,7 @@ def new_post_email(email_address):
     new_posts = Post.objects.filter(new_post=True)
     this_message = "<ul>"
     for new_post in new_posts:
-        this_message += f'<li><a href="{settings.SITE_URL}/{new_post.pk}">{new_post.title}</a></li>'
+        this_message += f'<li><a href="{settings.SITE_URL}/post/{new_post.pk}">{new_post.title}</a></li>'
     this_message += "</ul>"
     message = Mail(
         from_email=settings.DEFAULT_FROM_EMAIL,
