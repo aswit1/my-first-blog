@@ -7,6 +7,12 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('title', 'text',)
 
+
+class AlexPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'text', 'blog_post',)
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = PostComment

@@ -25,22 +25,22 @@
 
               </nav>
               {% if user.is_authenticated %}
-                  <a href="{% url 'post_new' %}" class="top-menu">
-                      {% include './icons/file-earmark-plus.svg' %}
+                  <a href="{% url 'poll_list' %}" class="top-menu" style="font-size: 28px">
+                        Polls
                   </a>
-                  <a href="{% url 'poll_list' %}" class="top-menu">
-                        {% include './icons/bar-chart-line.svg' %}
+                  <a href="{% url 'post_list' %}" class="top-menu" style="font-size: 28px">
+                        Community Blog
                   </a>
               {% endif %}
 
               {% if request.user.is_superuser %}
-                  <a href="{% url 'all_users' %}" class="top-menu">
-                      {% include './icons/list.svg' %}
+                  <a href="{% url 'all_users' %}" class="top-menu" style="font-size: 28px">
+                      User List
                   </a>
-                  <a href="{% url 'manual_new_post_task' %}" class="top-menu" style="font-size: 28px">
-                      Test
+                  <a href="{% url 'manual_new_post_task' %}" class="top-menu" style="font-size: 14px">
+                      Email
                   </a>
-                  <a href="{% url 'meow' %}" class="top-menu" style="font-size: 28px">
+                  <a href="{% url 'meow' %}" class="top-menu" style="font-size: 14px">
                       Weather
                   </a>
               {% endif %}
