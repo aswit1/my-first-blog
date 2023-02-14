@@ -87,15 +87,35 @@ def post_comment(request, pk):
 
 @login_required()
 def post_delete(request, pk):
+    alex_posts = Post.objects.filter(blog_post=True).order_by('published_date')
+    community_posts = Post.objects.filter(blog_post=False).order_by('published_date')
     this_post = get_object_or_404(Post, pk=pk)
-    if request.user != this_post.author and request.user.is_superuser is False:
-        messages.add_message(request, messages.ERROR, "You can't do that.")
-        return redirect('post_list', pk=this_post.pk)
-    # this_post = Post.objects.get(pk=pk)
-    this_post.delete()
-    return redirect('post_list')
+    if this_post in alex_posts:
+        this_post = get_object_or_404(Post, pk=pk)
+        if request.user != this_post.author and request.user.is_superuser is False:
+            messages.add_message(request, messages.ERROR, "You can't do that.")
+            return redirect('alex_post_list', pk=this_post.pk)
+        this_post.delete()
+        return redirect('alex_post_list')
+    if this_post in community_posts:
+        this_post = get_object_or_404(Post, pk=pk)
+        if request.user != this_post.author and request.user.is_superuser is False:
+            messages.add_message(request, messages.ERROR, "You can't do that.")
+            return redirect('post_list', pk=this_post.pk)
+        this_post.delete()
+        return redirect('post_list')
 
+    # this_post.delete()
+    # return redirect('post_list')
 
+# this_post = get_object_or_404(Post, pk=pk)
+#
+#         if request.user != this_post.author and request.user.is_superuser is False:
+#             messages.add_message(request, messages.ERROR, "You can't do that.")
+#             return redirect('post_list', pk=this_post.pk)
+#     # this_post = Post.objects.get(pk=pk)
+#     this_post.delete()
+#     return redirect('post_list')
 @login_required()
 def comment_delete(request, pk):
     comment = get_object_or_404(PostComment, pk=pk)
