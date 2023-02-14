@@ -105,17 +105,6 @@ def post_delete(request, pk):
         this_post.delete()
         return redirect('post_list')
 
-    # this_post.delete()
-    # return redirect('post_list')
-
-# this_post = get_object_or_404(Post, pk=pk)
-#
-#         if request.user != this_post.author and request.user.is_superuser is False:
-#             messages.add_message(request, messages.ERROR, "You can't do that.")
-#             return redirect('post_list', pk=this_post.pk)
-#     # this_post = Post.objects.get(pk=pk)
-#     this_post.delete()
-#     return redirect('post_list')
 @login_required()
 def comment_delete(request, pk):
     comment = get_object_or_404(PostComment, pk=pk)

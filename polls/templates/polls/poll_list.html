@@ -7,12 +7,48 @@
           </a>
      {% endif %}
     {% for poll in polls %}
-        <article class="poll">
-            <time class="date">
-                {{ poll.published_date }}
-            </time>
-            <h2><a href="{% url 'poll_detailv2' pk=poll.pk %}">{{ poll.title }}</a></h2>
-            <p>{{ poll.text|linebreaksbr }}</p>
-        </article>
+        <div class="row">
+            <div class="col col-6">
+                <article class="poll">
+                    <time class="date">
+                        {{ poll.published_date }}
+                    </time>
+                    <h2><a href="{% url 'poll_detailv2' pk=poll.pk %}">{{ poll.title }}</a></h2>
+                    <p>{{ poll.pollqqqq.all }}</p>
+                    <p>{{ poll.text|linebreaksbr }}</p>
+                </article>
+            </div>
+            <div class="col col-2">
+                <article>
+                    <canvas id="myChart{{ poll.pk }}" width="100" height="100"></canvas>
+                </article>
+            </div>
+        </div>
+
+        <script>
+            {% for each_poll in polls %}
+                  const ctx = document.getElementById('myChart{{ each_poll.pk }}');
+
+                  new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                      labels: [
+                          {% for each_option in each_poll.pollq.all %}
+                              "{{ each_option.description }}",
+                          {% endfor %}
+                      ],
+                      datasets: [{
+                        label: '# of Votes',
+                        data: [
+                              {% for each_option in each_poll.pollq.all %}
+                                  {{ each_option.votes }},
+                              {% endfor %}
+                            ],
+                        hoverOffset: 4
+                      }]
+                    },
+                  });
+            {% endfor %}
+        </script>
     {% endfor %}
 {% endblock %}}
