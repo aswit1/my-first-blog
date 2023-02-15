@@ -24,12 +24,13 @@
                 </article>
             </div>
         </div>
+{% endfor %}
 
         <script>
             {% for each_poll in polls %}
-                  const ctx = document.getElementById('myChart{{ each_poll.pk }}');
+                  const ctx{{ each_poll.pk }} = document.getElementById('myChart{{ each_poll.pk }}');
 
-                  new Chart(ctx, {
+                  var this_chart{{ each_poll.pk }} = new Chart(ctx{{ each_poll.pk }}, {
                     type: 'doughnut',
                     data: {
                       labels: [
@@ -47,8 +48,16 @@
                         hoverOffset: 4
                       }]
                     },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+
+                    }
                   });
             {% endfor %}
         </script>
-    {% endfor %}
+
 {% endblock %}}
