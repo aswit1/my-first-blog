@@ -7,12 +7,19 @@
           </a>
      {% endif %}
     {% for post in posts %}
-        <article class="post">
-            <time class="date">
-                {{ post.published_date }}
-            </time>
-            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-            <p>{{ post.text|linebreaksbr }}</p>
-        </article>
+        <div class="row">
+            <div class="col col-10">
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                <p>{{ post.text|linebreaksbr }}</p>
+            </div>
+            <div class="col col-2">
+                <time class="date" style="justify-content: end">
+                    {{ post.published_date }}
+                </time><br>
+                <p>
+                    Comments: {{ post.postcomment_set.all|length }}
+                </p>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}}
