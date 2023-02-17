@@ -3,11 +3,11 @@
 {% block content %}
     <article class="post">
         <div class="row">
-            <div class="col col-6">
+            <div class="col-md-9">
                 <h2>{{ post.title }}</h2>
                 <p>{{ post.text|linebreaksbr }}</p>
             </div>
-            <div class="col col-4">
+            <div class="col-md-3">
                 {% if post.published_date %}
                     <time class="date" style="margin-right: 30px">
                         Posted: {{ post.published_date }}
@@ -21,9 +21,7 @@
                 {% if post.author %}
                     <span>Posted by: {{post.author}}</span>
                 {% endif %}
-            </div>
-            <div class="col col-2">
-               <aside class="actions">
+               <aside class="actions mt-3">
                     {% if user.is_authenticated and post.author == user %}
                         <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
                             {% include './icons/pencil-fill.svg' %}
@@ -46,40 +44,37 @@
         {% for comment in comments %}
             <div class="card">
                 <div class="card-header">
-                        <span>{{ comment.author }}</span>
-                    <span class="float-end container-fluid">
-                        <div class="row">
-                            <div class="col col-6"></div>
-                            <div class="col col-4" style="text-align: right">
-                                 {% if comment.published_date %}
-                                    <time class="date" style="color: black">
-                                        Posted: {{ comment.published_date }}
-                                    </time><br>
-                                {% endif %}
-                                {% if comment.edit_date %}
-                                    <time class="date" style="color: black">
-                                        Last edited: {{ comment.edit_date }}
-                                    </time>
-                                {% endif %}
-                            </div>
-                            <div class="col col-2">
-                                <aside class="actions">
-                                    {% if user.is_authenticated and comment.author == user or request.user.is_superuser%}
-                                        <a class="btn btn-secondary float-end" href="{% url 'comment_delete' pk=comment.pk %}">
-                                            {% include './icons/trash.svg' %}
-                                        </a>
-                                    {% endif %}
-                                    {% if user.is_authenticated and comment.author == user %}
-                                        <a class="btn btn-secondary float-end" href="{% url 'comment_edit' pk=comment.pk %}">
-                                            {% include './icons/pencil-fill.svg' %}
-                                        </a>
-                                    {% endif %}
-                                </aside>
-                            </div>
-                        </div>
+                    {{ comment.author }}
+                    <span class="float-end inline">
+
+                        {% if user.is_authenticated and comment.author == user or request.user.is_superuser%}
+                            <a class="btn btn-secondary float-end" href="{% url 'comment_delete' pk=comment.pk %}">
+                                {% include './icons/trash.svg' %}
+                            </a>
+                        {% endif %}
+                        {% if user.is_authenticated and comment.author == user %}
+                            <a class="btn btn-secondary float-end" href="{% url 'comment_edit' pk=comment.pk %}">
+                                {% include './icons/pencil-fill.svg' %}
+                            </a>
+                        {% endif %}
+                    </span>
+
+                </div>
+                <div class="card-body">
+                    <p>{{ comment.text }}</p>
+                    <span class="float-end" style="text-align: right">
+                        {% if comment.published_date %}
+                            <time class="date" style="color: grey">
+                                Posted: {{ comment.published_date }}
+                            </time><br>
+                        {% endif %}
+                        {% if comment.edit_date %}
+                            <time class="date" style="color: grey">
+                                Last edited: {{ comment.edit_date }}
+                            </time>
+                        {% endif %}
                     </span>
                 </div>
-                <div class="card-body"><p>{{ comment.text }}</p></div>
             </div><br>
         {% endfor %}
     </article>

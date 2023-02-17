@@ -3,14 +3,14 @@
 {% block content %}
 
     <div class="row">
-        <div class="col col-8">
+        <div class="col-12 col-lg-8">
             <article class="poll">
                 <div class="row">
-                    <div class="col col-6">
+                    <div class="col-6 col-lg-5">
                         <h2>{{ poll.title }}</h2>
                         <p>{{ poll.text|linebreaksbr }}</p>
                     </div>
-                    <div class="col col-3">
+                    <div class="col-6 col-lg-3">
                         {% if poll.published_date %}
                             <time class="date" style="margin-right: 30px">
                                 Posted: {{ poll.published_date }}
@@ -25,8 +25,8 @@
                             <span>Posted by: {{poll.author}}</span>
                         {% endif %}
                     </div>
-                    <div class="col col-3">
-                       <aside class="actions">
+                    <div class="col-12 col-lg-4 mt-2">
+                       <aside class="actions float-end">
                             {% if request.user.is_superuser or request.user == poll.author %}
                                 <a class="btn btn-secondary" href="{% url "poll_delete" pk=poll.pk %}">
                                     {% include 'blog/icons/trash.svg' %}
@@ -90,7 +90,7 @@
             </article>
         </div>
 
-        <div class="col col4">
+        <div class="col-12 col-lg-4">
             <canvas id="myChart" width="400" height="100"></canvas>
         </div>
 
