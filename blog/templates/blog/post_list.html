@@ -7,19 +7,23 @@
           </a>
      {% endif %}
     {% for post in posts %}
-        <div class="row">
-            <div class="col-8">
-                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-                <p>{{ post.text|linebreaksbr }}</p>
-            </div>
-            <div class="col-4 col-lg-2">
-                <time class="date" style="justify-content: end">
-                    {{ post.published_date }}
-                </time><br>
-                <p>
-                    Comments: {{ post.postcomment_set.all|length }}
-                </p>
+        <div class="card-body mt-3">
+            <div class="row">
+                <div class="col-8 col-lg-7">
+                    <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+    {#                <p>{{ post.text|linebreaksbr }}</p>#}
+                </div>
+                <div class="d-none d-lg-block col-lg-2"></div>
+                <div class="col-4 col-lg-3">
+                    <time class="date" style="justify-content: end">
+                        {{ post.published_date }}
+                    </time><br>
+                    <p>
+                        Comments: {{ post.postcomment_set.all|length }}
+                    </p>
+                </div>
             </div>
         </div>
+
     {% endfor %}
 {% endblock %}}
