@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 style="color: black">User Profile:</h1>
-    <div class="table-responsive-lg">
+    <div class="table-responsive-lg d-none d-lg-block">
     <table class="table">
         <thead>
             <tr>
@@ -30,5 +30,48 @@
             </tr>
         </tbody>
     </table>
+    </div>
+
+    <div class="d-xs-block d-lg-none">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">First Name</th>
+                    <td>{{this_current_user.user.first_name}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Last Name</th>
+                    <td>{{this_current_user.user.last_name}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Username</th>
+                    <td>{{this_current_user.user.username}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Email</th>
+                    <td>{{this_current_user.user.email}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Gender</th>
+                    <td>{{this_current_user.user.gender}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Birthdate</th>
+                    <td>{{this_current_user.user.birthday}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Phone Number</th>
+                    <td>{{this_current_user.user.phone_number}}</td>
+                </tr>
+                <tr>
+                    <th>Edit User</th>
+                    <td>
+                        <a class="btn btn-secondary float-end" href="{% url 'user_profile_edit' %}">
+                            {% include 'blog/icons/pencil-fill.svg' %}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 {% endblock %}
