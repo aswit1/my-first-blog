@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <h1 style="color: black">Community Blog:</h1>
     {% if user.is_authenticated %}
           <a href="{% url 'post_new' %}" class="btn btn-secondary justify-content-end">
               Add New Post
