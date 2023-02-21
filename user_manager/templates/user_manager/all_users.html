@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 style="color: black">User Profiles:</h1>
-    <div class="table-responsive-lg">
+    <div class="d-none d-lg-block">
     <table class="table table-hover">
         <thead>
             <tr>
@@ -37,7 +37,53 @@
     </table>
     </div>
 
-
+    <div class="d-xs-block d-lg-none">
+        {% for user_profile in user_profiles %}
+            <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">First Name</th>
+                    <td>{{user_profile.user.first_name}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Last Name</th>
+                    <td>{{user_profile.user.last_name}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Username</th>
+                    <td>{{user_profile.user.username}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Email</th>
+                    <td>{{user_profile.user.email}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Gender</th>
+                    <td>{{user_profile.user.gender}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Birthdate</th>
+                    <td>{{user_profile.user.birthday}}</td>
+                </tr>
+                <tr scope="row">
+                    <th>Phone Number</th>
+                    <td>{{user_profile.user.phone_number}}</td>
+                </tr>
+                <tr>
+                    <th>User Options</th>
+                    <td>
+                        <a class="btn btn-secondary float-end" href="{%  url 'user_delete' pk=user_profile.pk %}">
+                            {% include 'blog/icons/trash.svg' %}
+                        </a>
+                        <a class="btn btn-secondary float-end" href="{% url 'user_edit' pk=user_profile.pk %}">
+                            {% include 'blog/icons/pencil-fill.svg' %}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        {% endfor %}
+    </div>
 
 {% endblock %}
 
