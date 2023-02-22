@@ -1,6 +1,18 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <div>
+        {% if post.blog_post == True %}
+            <a href="{% url 'alex_post_list' %}" class="btn btn-secondary justify-content-end">
+                  Back to Post List
+            </a>
+        {% endif %}
+        {% if post.blog_post == False %}
+            <a href="{% url 'post_list' %}" class="btn btn-secondary justify-content-end">
+                  Back to Post List
+            </a>
+        {% endif %}
+    </div><br>
     <article class="post">
         <div class="row">
             <div class="col-md-9">

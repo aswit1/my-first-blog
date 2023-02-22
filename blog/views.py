@@ -105,6 +105,8 @@ def post_delete(request, pk):
         this_post.delete()
         return redirect('post_list')
 
+
+
 @login_required()
 def comment_delete(request, pk):
     comment = get_object_or_404(PostComment, pk=pk)
