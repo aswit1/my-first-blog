@@ -7,7 +7,7 @@ from .forms import PostForm, CommentForm, AlexPostForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .tasks import new_post_email, update_emails
+from .tasks import new_post_email, update_emails, comment_emails
 
 
 # Create your views here.
@@ -78,10 +78,11 @@ def post_comment(request, pk):
             # post_comment.publish()
             post_comment.published_date = timezone.now()
             post_comment.save()
+            post_author_email = this_post.author.email
+            comment_emails.delay(post_comment.pk, post_author_email)
             return redirect('post_detail', pk=this_post.pk)
     else:
         form = CommentForm()
-
     return render(request, 'blog/comment.html', {'form': form, 'post': this_post})
 
 

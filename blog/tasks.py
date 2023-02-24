@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from user_manager.models import UserProfile
 from user_manager.views import all_users
-from .models import Post
+from .models import Post, PostComment
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.conf import settings
@@ -79,4 +79,45 @@ def new_post_email(email_address):
 
     except Exception as e:
         print("Error: {0}".format(e))
+
+@ shared_task
+def comment_emails(pk, email_address):
+    new_comment = PostComment.objects.get(pk=pk)
+    this_post = new_comment.post
+    this_user = this_post.author.username
+
+
+    post_url = f'{settings.SITE_URL}/post/{new_comment.pk}'
+    commenter = new_comment.author.username
+    comment_time = new_comment.published_date.strftime("%H:%M:%S")
+
+    message = Mail(
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to_emails=email_address,
+        subject='New Comments',
+        # html_content=this_message
+    )
+    message.dynamic_template_data = {
+        "post_url": post_url,
+        "commenter": commenter,
+        "comment_time": comment_time,
+        "this_user": this_user,
+    }
+
+    message.template_id = "d-08e5519f4f8a4bef9189d904eb02c91f"
+
+    try:
+        sg = SendGridAPIClient(settings.EMAIL_HOST_PASSWORD)
+        response = sg.send(message)
+        code, body, headers = response.status_code, response.body, response.headers
+        print(f"Response Code: {code} ")
+        print(f"Response Body: {body} ")
+        print(f"Response Headers: {headers} ")
+        print("Message Sent!")
+
+    except Exception as e:
+        print("Error: {0}".format(e))
+
+
+
 
