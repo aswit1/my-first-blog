@@ -6,7 +6,8 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.conf import settings
 from celery import shared_task
-
+from datetime import datetime
+import pytz
 
 # def new_post_email():
 #     new_posts = Post.objects.filter(new_post=True)
@@ -89,7 +90,9 @@ def comment_emails(pk, email_address):
 
     post_url = f'{settings.SITE_URL}/post/{new_comment.pk}'
     commenter = new_comment.author.username
-    comment_time = new_comment.published_date.strftime("%H:%M:%S")
+    comment_time = new_comment.published_date
+    comment_time = comment_time.astimezone(pytz.timezone('America/New_York'))
+    comment_time = comment_time.strftime("%I:%M %p")
 
     message = Mail(
         from_email=settings.DEFAULT_FROM_EMAIL,
