@@ -104,3 +104,29 @@ h1, h2, h3, h4 {
 .navbar-brand {
     color: white;
 }
+
+.msg {
+    border-radius: 10px;
+}
+
+.msg.right {
+    float: right;
+    background-color: #4ac1f7;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.msg.left{
+    float: left;
+    background-color: lightgray;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#chatbox{
+    height: 500px;
+    overflow-y:auto;
+    /*scroll-margin-bottom: 1px;*/
+    display: flex;
+    flex-direction: column-reverse;
+}

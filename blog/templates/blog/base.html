@@ -9,6 +9,7 @@
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -35,6 +36,10 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'this_user' %}" tabindex="-1"
                                aria-disabled="true">Profile</a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'message_list' %}" tabindex="-1" aria-disabled="true">Messages</a>
                         </li>
                         {% endif %}
                         {% if request.user.is_superuser %}

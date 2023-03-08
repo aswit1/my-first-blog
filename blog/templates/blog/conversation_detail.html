@@ -1,0 +1,64 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
+              Back to Message List
+        </a>
+        <h2>{{ author.username }}</h2>
+
+    </div><br>
+    <div id="chatbox" class="col-9">
+    <article class="post" id="message_list">
+    {% for dmessage in all_messages %}
+        {% if dmessage.author == user %}
+            <div class="row">
+                    <div class="col-6">
+                        <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        {% if dmessage.send_date %}
+                            <time class="date" style="margin-right: 30px">
+                                Sent: {{ dmessage.send_date }}
+                            </time><br>
+                        {% endif %}
+
+                    </div>
+            </div>
+        {% else %}
+            <div class="row">
+                    <div class="col-6">
+                        <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        {% if dmessage.send_date %}
+                            <time class="date" style="margin-right: 30px">
+                                Sent: {{ dmessage.send_date }}
+                            </time><br>
+                        {% endif %}
+
+
+                    </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+        <br>
+    </article>
+    </div>
+    <form method="POST" class="post-form col-9">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-secondary">Send</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            setInterval(function updateDiv()
+                        {
+                        $( "#message_list" ).load(window.location.href + " #message_list" );
+                        }
+                        , 3000);
+        });
+    </script>
+{% endblock %}
+

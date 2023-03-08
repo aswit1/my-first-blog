@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
+              Back to Message List
+        </a>
+        <a href="{% url 'reply_message' pk=dmessage.pk %}" class="btn btn-secondary justify-content-end">
+            Reply
+        </a>
+    </div><br>
+    <article class="post">
+        <div class="row">
+            <div class="col-md-9">
+                <p>{{ dmessage.text|linebreaksbr }}</p>
+            </div>
+            <div class="col-md-3">
+                {% if dmessage.send_date %}
+                    <time class="date" style="margin-right: 30px">
+                        Posted: {{ dmessage.send_date }}
+                    </time><br>
+                {% endif %}
+
+                {% if dmessage.author %}
+                    <span>Sent by: {{dmessage.author}}</span>
+                {% endif %}
+            </div>
+        </div><br>
+    </article>
+{% endblock %}
+
