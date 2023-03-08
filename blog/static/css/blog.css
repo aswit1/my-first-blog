@@ -126,6 +126,7 @@ h1, h2, h3, h4 {
 #chatbox{
     height: 500px;
     overflow-y:auto;
+    overflow-x:hidden;
     /*scroll-margin-bottom: 1px;*/
     display: flex;
     flex-direction: column-reverse;
