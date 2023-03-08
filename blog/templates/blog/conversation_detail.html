@@ -9,7 +9,6 @@
 
     </div><br>
     <div id="chatbox" class="col">
-    <article class="post" id="message_list">
     {% for dmessage in all_messages %}
         {% if dmessage.author == user %}
             <div class="row">
@@ -19,7 +18,9 @@
                                 {{ dmessage.send_date }}
                             </p><br>
                         {% endif %}
-                        <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
+                        <div class="col-8" style="float: right">
+                            <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
+                        </div>
                     </div>
 
             </div>
@@ -31,21 +32,24 @@
                                 {{ dmessage.send_date }}
                             </p><br>
                         {% endif %}
-                        <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
+                        <div class="col-8" style="float: left">
+                            <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
+                        </div>
+
                     </div>
 
             </div>
         {% endif %}
     {% endfor %}
-
-        <br>
-    </article>
     </div>
-    <form method="POST" class="post-form col">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit button" class="save btn btn-secondary">Send</button>
+    <div id="form">
+         <form method="POST" class="post-form col">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit button" class="save btn btn-secondary">Send</button>
 
-    </form>
+        </form>
+    </div>
+
 
     <script>
         $(document).ready(function () {
