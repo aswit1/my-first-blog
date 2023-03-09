@@ -199,6 +199,6 @@ def conversation_detail(request, pk):
             message.recipient.add(author)
             message.save()
             # we have to use this ON THE FORM for many to many fields because of commit=false. Thats just how it is ¯\_(ツ)_/¯
-    all_messages = Direct_Message.objects.filter(Q(recipient=request.user, author=author) | Q(recipient=author, author=request.user)).order_by('-send_date')
+    all_messages = Direct_Message.objects.filter(Q(recipient=request.user, author=author) | Q(recipient=author, author=request.user)).order_by('send_date')
     form = Reply_MessageForm
     return render(request, 'blog/conversation_detail.html', {'author': author, 'all_messages': all_messages, 'form': form})
