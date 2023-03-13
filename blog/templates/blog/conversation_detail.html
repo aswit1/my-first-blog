@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <div id="convo-page">
     <div>
         <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
               Back to Message List
@@ -60,5 +61,6 @@
                         , 3000);
         });
     </script>
+    </div>
 {% endblock %}
 

@@ -202,3 +202,26 @@ def conversation_detail(request, pk):
     all_messages = Direct_Message.objects.filter(Q(recipient=request.user, author=author) | Q(recipient=author, author=request.user)).order_by('-send_date')
     form = Reply_MessageForm
     return render(request, 'blog/conversation_detail.html', {'author': author, 'all_messages': all_messages, 'form': form})
+
+def new_messages(request, pk):
+    form = Reply_MessageForm(request.POST)
+    author = get_object_or_404(User, pk=pk)
+    new_message_list = []
+    new_messages(default=False)
+    for message in new_messages():
+        if form.is_valid():
+            message.new_messages = True
+            message.save()
+            new_message_list.append(message.author)
+        # we have to use this ON THE FORM for many to many fields because of commit=false. Thats just how it is ¯\_(ツ)_/¯
+            form.save_m2m()
+    return render(request, 'blog/conversation_detail.html', {'author': author, 'form': form, 'new_message_list': new_message_list})
+
+    # new_messages = Direct_Message.objects.filter(new_message=True)
+    # if len(new_messages) < 1:
+    #     return "no new messages"
+    # if len(new_messages) > 0:
+    #     return "new messages"
+    # for message in new_messages:
+    #     message.new_messages = False
+    #     message.save()

@@ -46,6 +46,7 @@ class Direct_Message(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipient = models.ManyToManyField(User, related_name='recipient')
     send_date = models.DateTimeField(blank=True, null=True)
+    new_messages = models.BooleanField(default=True)
 
     def send(self):
         self.send_date = timezone.now()

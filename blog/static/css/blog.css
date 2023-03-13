@@ -124,15 +124,19 @@ h1, h2, h3, h4 {
 }
 
 #chatbox{
-    /*height: 550px;*/
+    height: 75%;
     overflow-y:auto;
     overflow-x:hidden;
     /*scroll-margin-bottom: 1px;*/
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 1 40px;
     flex-direction: column-reverse;
 }
 
 #form{
-    flex: 0 1 40px;
+    /*flex: 0 1 40px;*/
+}
+
+#convo-page{
+    height: 90vh
 }
