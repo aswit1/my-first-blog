@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import TextInput, CharField
+from django.shortcuts import get_object_or_404
 
-from .models import Post, PostComment, Direct_Message, Reply_Message
+from .models import Post, PostComment, Direct_Message, Conversations
 
 
 class PostForm(forms.ModelForm):
@@ -23,7 +24,25 @@ class CommentForm(forms.ModelForm):
 class Direct_MessageForm(forms.ModelForm):
     class Meta:
         model = Direct_Message
-        fields = ['text', 'recipient']
+        fields = ['text']
+
+
+class ConversationForm(forms.ModelForm):
+    class Meta:
+        model = Conversations
+        fields = ['recipient']
+
+    # def check_existing(self):
+    #     this_recipient = self.cleaned_data['recipient']
+    #     meep = Conversations.objects.filter(recipient__exact=this_recipient.all)
+    #     # meep = get_object_or_404(Conversations, recipient_c=this_recipient.all)
+    #     print(this_recipient, "%%%%%%%%%%%%%%%%%%%%")
+    #
+    #     # if len(Conversations.objects.filter(recipient=this_recipient)) > 0:
+    #     #     return True
+    #     # else:
+    #     #     return False
+
 
 class Reply_MessageForm(forms.ModelForm):
     class Meta:

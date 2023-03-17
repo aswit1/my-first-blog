@@ -2,6 +2,14 @@
 
 {% block content %}
 
+    <div id="convo-page">
+    <div>
+        <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
+              Back to Message List
+        </a>
+        <h2>{% for each_convo in my_conversations %}{% for each in each_convo.recipient.all %}{{ each.username }}{% endfor %}{% endfor %}</h2>
+
+
 
     <div id="flex-parent">
 
@@ -68,5 +76,6 @@
                         , 3000);
         });
     </script>
+    </div>
 {% endblock %}
 

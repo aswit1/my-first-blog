@@ -149,6 +149,7 @@ h1, h2, h3, h4 {
 }
 
 #chatbox{
+
     min-height: 0px;
     overflow-y:scroll;
     flex: 1 1 0;

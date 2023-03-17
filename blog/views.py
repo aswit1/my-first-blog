@@ -3,9 +3,9 @@ from django.db.models import Q
 from django.utils import timezone
 
 from user_manager.models import Weather, UserProfile
-from .models import Post, PostComment, Direct_Message
+from .models import Post, PostComment, Direct_Message, Conversations
 from django.shortcuts import render, get_object_or_404
-from .forms import PostForm, CommentForm, AlexPostForm, Direct_MessageForm, Reply_MessageForm
+from .forms import PostForm, CommentForm, AlexPostForm, Direct_MessageForm, Reply_MessageForm, ConversationForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -17,13 +17,16 @@ def manual_new_post_task(request):
     update_emails()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 def post_list(request):
     posts = Post.objects.filter(blog_post=False).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
+
 def alex_post_list(request):
     posts = Post.objects.filter(blog_post=True).order_by('published_date')
     return render(request, 'blog/alex_post_list.html', {'posts': posts})
+
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -109,7 +112,6 @@ def post_delete(request, pk):
         return redirect('post_list')
 
 
-
 @login_required()
 def comment_delete(request, pk):
     comment = get_object_or_404(PostComment, pk=pk)
@@ -141,64 +143,81 @@ def comment_edit(request, pk):
         form = CommentForm(instance=comment)
     return render(request, 'blog/comment.html', {'form': form})
 
+
 @login_required()
 def direct_message(request):
     if request.method == "POST":
         form = Direct_MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.send_date = timezone.now()
-            message.author = request.user
-            message.save()
-            #we have to use this ON THE FORM for many to many fields because of commit=false. Thats just how it is ¯\_(ツ)_/¯
-            form.save_m2m()
-            messages.add_message(request, messages.SUCCESS, "You sent message! woohooo!")
-            return redirect('message_list')
+        form2 = ConversationForm(request.POST)
+        if form2.is_valid():
+            conversation = form2.save(commit=False)
+            conversation.save()
+            form2.save_m2m()
+            conversation.recipient.add(request.user)
+
+            for each in conversation.recipient.all():
+                conversation.marked_as_new.add(each)
+            conversation.marked_as_new.remove(request.user)
+            conversation.save()
+            if form.is_valid():
+                message = form.save(commit=False)
+                message.send_date = timezone.now()
+                message.author = request.user
+                message.conversation = conversation
+                message.save()
+
+        messages.add_message(request, messages.SUCCESS, "You sent message! woohooo!")
+        return redirect('message_list')
+
     else:
         form = Direct_MessageForm()
-    return render(request, 'blog/direct_message.html', {'form': form})
+        form2 = ConversationForm()
+    return render(request, 'blog/direct_message.html', {'form': form, 'form2': form2})
 
-def reply_message(request):
-    if request.method == "POST":
-        form = Reply_MessageForm(request.POST)
-        if form.is_valid():
-            reply_message = form.save(commit=False)
-            reply_message.reply_recipient = dmessage.author
-            reply_message.send_date = timezone.now()
-            reply_message.author = request.user
-            reply_message.save()
-            form.save_m2m()
-            messages.add_message(request, messages.SUCCESS, "You sent reply!")
-            return redirect('message_list')
-    else:
-        form = Reply_MessageForm()
-    return render(request, 'blog/reply_message.html', {'form': form})
+
+# def reply_message(request):
+#     if request.method == "POST":
+#         form = Reply_MessageForm(request.POST)
+#         if form.is_valid():
+#             reply_message = form.save(commit=False)
+#             reply_message.reply_recipient = dmessage.author
+#             reply_message.send_date = timezone.now()
+#             reply_message.author = request.user
+#             reply_message.save()
+#             form.save_m2m()
+#             messages.add_message(request, messages.SUCCESS, "You sent reply!")
+#             return redirect('message_list')
+#     else:
+#         form = Reply_MessageForm()
+#     return render(request, 'blog/reply_message.html', {'form': form})
+
 
 def message_list(request):
-    dmessages = Direct_Message.objects.filter(recipient=request.user).order_by('send_date')
-    # authors = User.objects.filter(pk__in=dmessages)
-    authors = []
-    for dmessage in dmessages:
-        if dmessage.author not in authors:
-            authors.append(dmessage.author)
-    return render(request, 'blog/message_list.html', {'dmessages': dmessages, 'authors': authors,})
+    my_conversations = Conversations.objects.filter(recipient=request.user)
+    print(my_conversations)
+    return render(request, 'blog/message_list.html', {'my_conversations': my_conversations})
 
-def message_detail(request, pk):
-    dmessage = get_object_or_404(Direct_Message, pk=pk)
-    return render(request, 'blog/message_detail.html', {'dmessage': dmessage})
 
 def conversation_detail(request, pk):
-    author = get_object_or_404(User, pk=pk)
+    my_conversation = Conversations.objects.get(pk=pk)
     if request.method == "POST":
         form = Reply_MessageForm(request.POST)
         if form.is_valid():
             message = form.save(commit=False)
             message.send_date = timezone.now()
             message.author = request.user
+            message.conversation = my_conversation
             message.save()
-            message.recipient.add(author)
-            message.save()
-            # we have to use this ON THE FORM for many to many fields because of commit=false. Thats just how it is ¯\_(ツ)_/¯
-    all_messages = Direct_Message.objects.filter(Q(recipient=request.user, author=author) | Q(recipient=author, author=request.user)).order_by('send_date')
+
+            message.conversation.marked_as_new.set(message.conversation.recipient.all())
+            message.conversation.marked_as_new.remove(request.user)
+            message.conversation.save()
+    all_messages = Direct_Message.objects.filter(conversation=my_conversation).order_by('-send_date')
+
     form = Reply_MessageForm
-    return render(request, 'blog/conversation_detail.html', {'author': author, 'all_messages': all_messages, 'form': form})
+    my_conversation.marked_as_new.remove(request.user)
+    return render(request, 'blog/conversation_detail.html',
+                  {'all_messages': all_messages, 'form': form})
+
+
+
