@@ -2,12 +2,12 @@
 
 {% block content %}
 
-    <div id="convo-page">
-    <div>
-        <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
-              Back to Message List
-        </a>
-        <h2>{% for each_convo in my_conversations %}{% for each in each_convo.recipient.all %}{{ each.username }}{% endfor %}{% endfor %}</h2>
+{#    <div id="convo-page">#}
+{#    <div>#}
+{#        <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">#}
+{#              Back to Message List#}
+{#        </a>#}
+
 
 
 
@@ -15,7 +15,7 @@
 
         <div>
             <a href="{% url 'message_list' %}" class="btn btn-secondary ">Back to Message List</a>
-            <h2>{{ author.username }}</h2>
+            <h2>{% for each in my_conversation.recipient.all %}{{ each.username }} {% endfor %}</h2>
         </div>
 
         <br>
@@ -24,31 +24,27 @@
         {% for dmessage in all_messages %}
             {% if dmessage.author == user %}
                 <div class="row message-row"  >
-                        <div class="col">
                             {% if dmessage.send_date %}
                                 <p class="date text-center" >
                                     {{ dmessage.send_date }}
                                 </p><br>
                             {% endif %}
-                            <div class="col-8" style="float: right">
+                            <div class="col-md-8 offset-md-4">
                                 <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
                             </div>
-                        </div>
 
                 </div>
             {% else %}
                 <div class="row message-row">
-                        <div class="col">
+
                             {% if dmessage.send_date %}
                                 <p class="date text-center" >
                                     {{ dmessage.send_date }}
                                 </p><br>
                             {% endif %}
-                            <div class="col-8" style="float: left">
+                            <div class="col-md-8" style="float: left">
                                 <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
                             </div>
-
-                        </div>
 
                 </div>
             {% endif %}
@@ -71,11 +67,10 @@
         $(document).ready(function () {
             setInterval(function updateDiv()
                         {
-                        $( "#message_list" ).load(window.location.href + " #message_list" );
+                        $( "#chatbox" ).load(window.location.href + " #chatbox" );
                         }
                         , 3000);
         });
     </script>
-    </div>
 {% endblock %}
 

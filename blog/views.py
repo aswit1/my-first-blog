@@ -217,7 +217,7 @@ def conversation_detail(request, pk):
     form = Reply_MessageForm
     my_conversation.marked_as_new.remove(request.user)
     return render(request, 'blog/conversation_detail.html',
-                  {'all_messages': all_messages, 'form': form})
+                  {'all_messages': all_messages, 'form': form, 'my_conversation': my_conversation})
 
 
 

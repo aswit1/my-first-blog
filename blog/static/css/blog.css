@@ -24,7 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: pink;
+
 }
 
 h1 a, h2 a {
@@ -153,13 +153,17 @@ h1, h2, h3, h4 {
     min-height: 0px;
     overflow-y:scroll;
     flex: 1 1 0;
-    /*overflow-x:visible;*/
+    overflow-x:hidden;
     /*scroll-margin-bottom: 1px;*/
-    /*display: flex;*/
+    display: flex;
     /*flex: 1 1 auto;*/
-    /*flex-direction: column-reverse;*/
+    flex-direction: column-reverse;
 }
 
-.message-row{
-    width: 100%;
+/*.message-row{*/
+/*    width: 100%;*/
+/*}*/
+
+#message_form{
+    margin-bottom: 10px;
 }
