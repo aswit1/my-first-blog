@@ -41,24 +41,19 @@ class PostComment(models.Model):
     def __str__(self):
         return self.text
 
+
+class Conversations(models.Model):
+    recipient = models.ManyToManyField(User, related_name='recipient')
+    marked_as_new = models.ManyToManyField(User, related_name='marked_as_new')
+
+    def __str__(self):
+        return 'conversation'
+
+
 class Direct_Message(models.Model):
     text = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    recipient = models.ManyToManyField(User, related_name='recipient')
-    send_date = models.DateTimeField(blank=True, null=True)
-    new_messages = models.BooleanField(default=True)
-
-    def send(self):
-        self.send_date = timezone.now()
-        self.save()
-
-    def __str__(self):
-        return self.text
-
-class Reply_Message(models.Model):
-    text = models.TextField()
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    recipient = models.ManyToManyField(User, related_name='reply_recipient')
+    conversation = models.ForeignKey(Conversations, on_delete=models.CASCADE, blank=True, null=True)
     send_date = models.DateTimeField(blank=True, null=True)
 
     def send(self):

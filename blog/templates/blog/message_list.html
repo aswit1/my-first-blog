@@ -7,33 +7,23 @@
               Send New Message
           </a>
      {% endif %}
-{#    {% for message in dmessages %}#}
-{#            <div class="card-body mt-3">#}
-{#                <div class="row">#}
-{#                    <div class="col-7 col-lg-7">#}
-{#                            <h2><a href="{% url 'message_detail' pk=message.pk %}">{{ message.text }}</a></h2>#}
-{#                    </div>#}
-{#                    <div class="d-none d-lg-block col-lg-2"></div>#}
-{#                    <div class="col-5 col-lg-3">#}
-{#                        <time class="date" style="justify-content: end">#}
-{#                            {{ message.send_date }}#}
-{#                        </time><br>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#    {% endfor %}#}
 
-    {% for author in authors %}
-            <div class="card-body mt-3">
-                <div class="row">
-                    <div class="col-7 col-lg-7">
-                            <h2><a href="{% url 'conversation_detail' pk=author.pk %}">{{ author.username }}</a></h2>
-                    </div>
-                    <div class="d-none d-lg-block col-lg-2"></div>
-                    <div class="col-5 col-lg-3">
 
-                    </div>
-                </div>
+
+{% for each_convo in my_conversations %}
+    <div class="card-body mt-3">
+        <div class="row">
+            <div class="col-7 col-lg-7">
+                    <h2><a href="{% url 'conversation_detail' pk=each_convo.pk %}">{% for each in each_convo.recipient.all %}{{ each.username }}  {% endfor %}</a></h2>
+                {% if user in each_convo.marked_as_new.all %}
+                    is new
+                {% endif %}
             </div>
-    {% endfor %}
-{% endblock %}}
+            <div class="d-none d-lg-block col-lg-2"></div>
+            <div class="col-5 col-lg-3">
+
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -14,8 +14,7 @@ urlpatterns = [
     path('manual_new_post_task', views.manual_new_post_task, name='manual_new_post_task'),
     path('direct_message', views.direct_message, name='direct_message'),
     path('message_list', views.message_list, name='message_list'),
-    path('message_detail/<int:pk>/', views.message_detail, name='message_detail'),
     path('conversation_detail/<int:pk>/', views.conversation_detail, name='conversation_detail'),
-    path('reply_message/<int:pk>/', views.reply_message, name='reply_message'),
+
 
 ]

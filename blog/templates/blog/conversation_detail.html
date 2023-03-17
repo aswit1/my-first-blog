@@ -6,7 +6,7 @@
         <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
               Back to Message List
         </a>
-        <h2>{{ author.username }}</h2>
+        <h2>{% for each_convo in my_conversations %}{% for each in each_convo.recipient.all %}{{ each.username }}{% endfor %}{% endfor %}</h2>
 
     </div><br>
     <div id="chatbox" class="col">
