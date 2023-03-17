@@ -208,10 +208,12 @@ def conversation_detail(request, pk):
             message.author = request.user
             message.conversation = my_conversation
             message.save()
+
             message.conversation.marked_as_new.set(message.conversation.recipient.all())
             message.conversation.marked_as_new.remove(request.user)
             message.conversation.save()
     all_messages = Direct_Message.objects.filter(conversation=my_conversation).order_by('-send_date')
+
     form = Reply_MessageForm
     my_conversation.marked_as_new.remove(request.user)
     return render(request, 'blog/conversation_detail.html',

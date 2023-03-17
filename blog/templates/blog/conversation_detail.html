@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+
     <div id="convo-page">
     <div>
         <a href="{% url 'message_list' %}" class="btn btn-secondary justify-content-end">
@@ -8,47 +9,61 @@
         </a>
         <h2>{% for each_convo in my_conversations %}{% for each in each_convo.recipient.all %}{{ each.username }}{% endfor %}{% endfor %}</h2>
 
-    </div><br>
-    <div id="chatbox" class="col">
-    {% for dmessage in all_messages %}
-        {% if dmessage.author == user %}
-            <div class="row">
-                    <div class="col">
-                        {% if dmessage.send_date %}
-                            <p class="date text-center" >
-                                {{ dmessage.send_date }}
-                            </p><br>
-                        {% endif %}
-                        <div class="col-8" style="float: right">
-                            <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
-                        </div>
-                    </div>
 
-            </div>
-        {% else %}
-            <div class="row">
-                    <div class="col">
-                        {% if dmessage.send_date %}
-                            <p class="date text-center" >
-                                {{ dmessage.send_date }}
-                            </p><br>
-                        {% endif %}
-                        <div class="col-8" style="float: left">
-                            <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
+
+    <div id="flex-parent">
+
+        <div>
+            <a href="{% url 'message_list' %}" class="btn btn-secondary ">Back to Message List</a>
+            <h2>{{ author.username }}</h2>
+        </div>
+
+        <br>
+
+        <div id="chatbox" > {# class="align-self-stretch" #}
+        {% for dmessage in all_messages %}
+            {% if dmessage.author == user %}
+                <div class="row message-row"  >
+                        <div class="col">
+                            {% if dmessage.send_date %}
+                                <p class="date text-center" >
+                                    {{ dmessage.send_date }}
+                                </p><br>
+                            {% endif %}
+                            <div class="col-8" style="float: right">
+                                <p class="msg right">{{ dmessage.text|linebreaksbr }}</p>
+                            </div>
                         </div>
 
-                    </div>
+                </div>
+            {% else %}
+                <div class="row message-row">
+                        <div class="col">
+                            {% if dmessage.send_date %}
+                                <p class="date text-center" >
+                                    {{ dmessage.send_date }}
+                                </p><br>
+                            {% endif %}
+                            <div class="col-8" style="float: left">
+                                <p class="msg left">{{ dmessage.text|linebreaksbr }}</p>
+                            </div>
 
-            </div>
-        {% endif %}
-    {% endfor %}
-    </div>
-    <div id="form">
-         <form method="POST" class="post-form col">{% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit button" class="save btn btn-secondary">Send</button>
+                        </div>
 
-        </form>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <div id="message_form">
+             <form method="POST" class="post-form align-items-center">{% csrf_token %}
+                 <div class="d-flex">
+                     {{ form.text }}
+                    <button style="vertical-align:middle;" type="submit button" class="save btn btn-secondary">Send</button>
+                 </div>
+            </form>
+        </div>
+
     </div>
 
 

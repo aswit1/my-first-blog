@@ -48,7 +48,7 @@ class Reply_MessageForm(forms.ModelForm):
     class Meta:
         model = Direct_Message
         fields = ['text']
-        # widgets = {'text': TextInput(attrs={'type': 'text'})}
+        widgets = {'text': TextInput(attrs={'type': 'text','style':'vertical-align:middle;'})}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

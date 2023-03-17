@@ -88,7 +88,7 @@
             </div>
         </nav>
 
-        <main class="container">
+        <main class="container" id="base-container">
             <div class="row">
                 <div class="col">
                     {% if messages %}
@@ -107,15 +107,13 @@
                         </ul>
                         {% endfor %}
                     {% endif %}
-
-                    {% block scripts %}
-                    {% endblock scripts %}
-
-                    {% block content %}
-                    {% endblock %}
-
                 </div>
             </div>
+                    {% block scripts %}
+                    {% endblock scripts %}
+                    {% block content %}
+                    {% endblock %}
         </main>
+
     </body>
 </html>
