@@ -12,13 +12,29 @@
 
 {% for each_convo in my_conversations %}
     <div class="card-body mt-3">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-7 col-lg-7">
-                    <h2><a href="{% url 'conversation_detail' pk=each_convo.pk %}">{% for each in each_convo.recipient.all %}{{ each.username }}  {% endfor %}</a></h2>
-                {% if user in each_convo.marked_as_new.all %}
-                    is new
-                {% endif %}
+                <h2><a href="{% url 'conversation_detail' pk=each_convo.pk %}">{% for each in each_convo.recipient.all %}
+                    {% if each == request.user %}
+                    {% else %}
+                        {{ each.username }}
+                    {% endif %}
+                    {% if forloop.first %}
+                    {% elif not forloop.last %}
+                    +
+                    {% else %}
+                    {% endif %}
+                {% endfor %}</a></h2>
+
             </div>
+            {% if user in each_convo.marked_as_new.all %}
+                <div class="col-5" style="text-align: center">
+                    <div class="col-lg-2 float-end border rounded-pill" style="background-color: lightgreen">
+                            <p class="fw-bold pt-1 pb-0 px-2 mb-1" style="color: blue">is new</p>
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="d-none d-lg-block col-lg-2"></div>
             <div class="col-5 col-lg-3">
 

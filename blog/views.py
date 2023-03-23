@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils import timezone
 
 from user_manager.models import Weather, UserProfile
+from . import models
 from .models import Post, PostComment, Direct_Message, Conversations
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm, CommentForm, AlexPostForm, Direct_MessageForm, Reply_MessageForm, ConversationForm
@@ -158,7 +159,7 @@ def direct_message(request):
             for each in conversation.recipient.all():
                 conversation.marked_as_new.add(each)
             conversation.marked_as_new.remove(request.user)
-            conversation.save()
+            this_conversation = conversation.save()
             if form.is_valid():
                 message = form.save(commit=False)
                 message.send_date = timezone.now()
@@ -166,7 +167,32 @@ def direct_message(request):
                 message.conversation = conversation
                 message.save()
 
-        messages.add_message(request, messages.SUCCESS, "You sent message! woohooo!")
+
+                conversation_match=Conversations.objects.annotate(
+                    total_members=Count('recipient'),
+                    matching_members=Count('recipient', filter=Q(recipient__in=conversation.recipient.all()))
+                ).filter(
+                    matching_members=len(conversation.recipient.all()),
+                    total_members=len(conversation.recipient.all())
+                ).order_by('id')
+                for each in conversation_match:
+                    print(each.id)
+
+                if len(conversation_match) == 1:
+                    message.conversation = conversation_match[0]
+                    message.save()
+                    messages.add_message(request, messages.SUCCESS, "Added message to existing conversation!")
+
+                elif len(conversation_match) > 1:
+                    for each_convo in conversation_match:
+
+                        message.conversation = None
+                        message.save()
+                        conversation.delete()
+
+                else:
+                    messages.add_message(request, messages.SUCCESS, "New conversation created!")
+
         return redirect('message_list')
 
     else:
@@ -196,7 +222,6 @@ def message_list(request):
     my_conversations = Conversations.objects.filter(recipient=request.user)
     print(my_conversations)
     return render(request, 'blog/message_list.html', {'my_conversations': my_conversations})
-
 
 def conversation_detail(request, pk):
     my_conversation = Conversations.objects.get(pk=pk)

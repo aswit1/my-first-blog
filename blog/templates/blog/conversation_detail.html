@@ -15,7 +15,16 @@
 
         <div>
             <a href="{% url 'message_list' %}" class="btn btn-secondary ">Back to Message List</a>
-            <h2>{% for each in my_conversation.recipient.all %}{{ each.username }} {% endfor %}</h2>
+            <h2>{% for each in my_conversation.recipient.all %}
+                    {% if each == request.user %}
+                    {% else %}
+                        {{ each.username }}
+                    {% endif %}
+                    {% if forloop.first %}
+                    {% elif not forloop.last %}+
+                    {% else %}
+                    {% endif %}
+            {% endfor %}</h2>
         </div>
 
         <br>

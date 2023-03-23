@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'user_manager.context_processors.weather_context',
+                'blog.context_processors.new_message',
             ],
         },
     },
