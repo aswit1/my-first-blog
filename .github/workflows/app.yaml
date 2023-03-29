@@ -1,6 +1,6 @@
 name: pytest
 
-on: [push,merge,pull]
+on: [push,pull_request]
 
 permissions:
   contents: read
