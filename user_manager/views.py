@@ -25,10 +25,10 @@ def this_user(request):
     return render(request, 'user_manager/this_user.html', {'this_current_user': this_current_user})
 
 def user_profile_edit(request):
-    this_user = UserProfile.objects.get(user=request.user)
+    this_profile, created = UserProfile.objects.get_or_create(user=request.user)
     if request.method == "POST":
-        this_form = UserProfileEditForm(request.POST, instance=this_user)
-        this_user_form = UserEditForm(request.POST, instance=this_user.user)
+        this_form = UserProfileEditForm(request.POST, instance=this_profile)
+        this_user_form = UserEditForm(request.POST, instance=this_profile.user)
         if this_form.is_valid():
             form = this_form.save(commit=False)
             form.save()
@@ -36,9 +36,9 @@ def user_profile_edit(request):
             user_form = this_user_form.save(commit=False)
             user_form.save()
         return redirect('this_user')
-    # user_profile = UserProfile.objects.get_or_create(user=request.user)
-    this_form = UserProfileEditForm(instance=this_user)
-    this_user_form = UserEditForm(instance=this_user.user)
+
+    this_form = UserProfileEditForm(instance=this_profile)
+    this_user_form = UserEditForm(instance=this_profile.user)
     return render(request, 'user_manager/user_edit.html', {'this_form': this_form, 'this_user_form': this_user_form})
 
 

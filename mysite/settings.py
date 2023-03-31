@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'polls',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -199,3 +201,6 @@ if IS_HEROKU:
     CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 
 SITE_URL = os.getenv('SITE_URL')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'

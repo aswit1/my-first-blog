@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 {#    <div id="convo-page">#}
@@ -30,6 +30,7 @@
         <br>
 
         <div id="chatbox" > {# class="align-self-stretch" #}
+        <div id="refresh">
         {% for dmessage in all_messages %}
             {% if dmessage.author == user %}
                 <div class="row message-row"  >
@@ -59,11 +60,14 @@
             {% endif %}
         {% endfor %}
         </div>
+        </div>
 
         <div id="message_form">
              <form method="POST" class="post-form align-items-center">{% csrf_token %}
-                 <div class="d-flex">
+                 <div class="d-flex" id="text-message">
+
                      {{ form.text }}
+
                     <button style="vertical-align:middle;" type="submit button" class="save btn btn-secondary">Send</button>
                  </div>
             </form>
@@ -76,7 +80,7 @@
         $(document).ready(function () {
             setInterval(function updateDiv()
                         {
-                        $( "#chatbox" ).load(window.location.href + " #chatbox" );
+                        $( "#refresh" ).load(window.location.href + " #refresh" );
                         }
                         , 3000);
         });

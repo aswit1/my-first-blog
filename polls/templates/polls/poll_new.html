@@ -1,10 +1,7 @@
 {% extends 'blog/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
      {% if user.is_authenticated %}
-          <form method="POST" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-secondary">Save</button>
-          </form>
+{% crispy form %}
      {% endif %}
 {% endblock %}}

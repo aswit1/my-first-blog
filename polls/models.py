@@ -44,3 +44,6 @@ class PollQ(models.Model):
     description = models.TextField()
     votes = models.IntegerField(default=0)
     poll = models.ForeignKey(Pollv2, on_delete=models.CASCADE,related_name='pollq')
+
+    def __str__(self):
+        return self.description
