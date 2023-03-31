@@ -54,17 +54,3 @@ def test_blog_post(client,create_user,test_password,auto_login_user):
    assert Post.objects.filter(pk=1).count() == 1
    assert Post.objects.filter(author=test_user).count() == 1
    assert Post.objects.filter(published_date__exact=None).count() == 0
-
-#
-# @pytest.mark.django_db
-# def test_unauthorized(client):
-#    url = '/admin'
-#    response = client.get(url)
-#    assert response.status_code == 401
-#
-#
-# @pytest.mark.django_db
-# def test_superuser_view(admin_client):
-#    url = '/admin'
-#    response = admin_client.get(url)
-#    assert response.status_code == 200
