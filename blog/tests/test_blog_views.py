@@ -1,6 +1,7 @@
 import pytest
 
 from django.contrib.auth.models import User
+
 from django.urls import reverse
 from django.utils import timezone
 
@@ -35,6 +36,7 @@ def test_new_post_form(client, create_user, test_password):
    assert response.status_code == 200
 
 @pytest.mark.django_db
+
 def test_blog_post(client,create_user,test_password,auto_login_user):
    url = reverse('post_new')
    data = {
@@ -46,6 +48,7 @@ def test_blog_post(client,create_user,test_password,auto_login_user):
    assert response.status_code == 302
    assert Post.objects.filter(pk=1).count() == 1
    assert Post.objects.filter(author=test_user).count() == 1
+
    assert Post.objects.filter(published_date__exact=None).count() == 0
 
 @pytest.mark.django_db
@@ -137,4 +140,5 @@ def test_comment_delete(client, create_user, test_password):
    url = reverse('comment_delete', kwargs={'pk': this_comment.pk})
    response = client.get(url)
    assert response.status_code == 302
+
 

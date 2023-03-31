@@ -1,6 +1,10 @@
+
+import uuid
+
 import pytest
 from django.urls import reverse
-import uuid
+
+
 
 @pytest.fixture
 def test_password():
@@ -17,6 +21,8 @@ def create_user(db, django_user_model, test_password):
 
     return make_user
 
+
+
 @pytest.fixture
 def auto_login_user(db, client, create_user, test_password):
    def make_auto_login(user=None):
@@ -24,4 +30,5 @@ def auto_login_user(db, client, create_user, test_password):
            user = create_user()
        client.login(username=user.username, password=test_password)
        return client, user
+
    return make_auto_login
