@@ -1,14 +1,15 @@
 {% extends 'blog/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="row">
         <div class="col col-md-4 offset-md-4">
             <h2>Edit User</h2>
             <form method="POST" class="post-form">{% csrf_token %}
-                {{ this_user_form }}
-                {{ this_form }}
+                {{ this_user_form|crispy }}
+                {{ this_form|crispy }}
                 <button type="submit" class="save btn btn-secondary">Save</button>
             </form>
         </div>
     </div>
+
 {% endblock %}
