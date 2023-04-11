@@ -237,7 +237,7 @@ def conversation_detail(request, pk):
             message.conversation.marked_as_new.set(message.conversation.recipient.all())
             message.conversation.marked_as_new.remove(request.user)
             message.conversation.save()
-    all_messages = Direct_Message.objects.filter(conversation=my_conversation).order_by('-send_date')
+    all_messages = Direct_Message.objects.filter(conversation=my_conversation).order_by('send_date')
 
     form = Reply_MessageForm
     my_conversation.marked_as_new.remove(request.user)
