@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from polls.forms import PollForm, Pollv2Form, QuestionForm
+from polls.forms import PollForm, Pollv2Form, QuestionForm, Pollv3Form
 from polls.models import Poll, Pollv2, PollQ
 
 
@@ -14,16 +14,28 @@ def poll_list(request):
 def poll_vote(request, pk):
     poll = get_object_or_404(Pollv2, pk=pk)
     options = PollQ.objects.filter(poll=poll)
+    # if request.method == "POST":
+    #     print(request.POST)
+    #     option = request.POST["option"]
+    #     option_object = get_object_or_404(PollQ, pk=int(option))
+    #     option_object.votes += 1
+    #     option_object.save()
+    #     messages.add_message(request, messages.INFO, f"You voted for {option_object.description}")
+    #     return redirect('poll_detailv2', poll.pk)
+
     if request.method == "POST":
         print(request.POST)
-        option = request.POST["option"]
-        option_object = get_object_or_404(PollQ, pk=int(option))
-        option_object.votes += 1
-        option_object.save()
-        messages.add_message(request, messages.INFO, f"You voted for {option_object.description}")
-        return redirect('poll_detailv2', poll.pk)
+        form = Pollv3Form(request.POST,poll=poll)
+        if form.is_valid():
+            this_vote = form.data['my_vote']
+            this_question = PollQ.objects.get(pk=this_vote)
+            this_question.votes += 1
+            this_question.save()
+            messages.add_message(request, messages.INFO, f"You voted for {this_question.description}")
+            return redirect('poll_detailv2', poll.pk)
 
-    return render(request, 'polls/poll_vote.html', {'poll': poll, 'options': options,})
+    form = Pollv3Form(poll=poll)
+    return render(request, 'polls/poll_vote.html', {'poll': poll, 'options': options, 'form': form})
 
 @login_required()
 def poll_delete(request, pk):

@@ -42,14 +42,16 @@ def update_emails():
     if len(new_posts) < 1:
         return "no new posts"
     users = UserProfile.objects.all()
-    for user in users:
-        if user.email_updates is True:
-            email_user_list.append(user.user.email)
-    for each_user in email_user_list:
-        new_post_email(each_user)
-    for post in new_posts:
-        post.new_post = False
-        post.save()
+    if len(users) > 0:
+
+        for user in users:
+            if user.email_updates is True:
+                email_user_list.append(user.user.email)
+        for each_user in email_user_list:
+            new_post_email(each_user)
+        for post in new_posts:
+            post.new_post = False
+            post.save()
 
 
 def new_post_email(email_address):
