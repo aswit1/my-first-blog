@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 
-from blog.models import Post, PostComment
+from blog.models import Post, PostComment, Direct_Message, Conversations
 
 
 @pytest.mark.django_db
@@ -36,7 +36,6 @@ def test_new_post_form(client, create_user, test_password):
    assert response.status_code == 200
 
 @pytest.mark.django_db
-
 def test_blog_post(client,create_user,test_password,auto_login_user):
    url = reverse('post_new')
    data = {
@@ -141,4 +140,38 @@ def test_comment_delete(client, create_user, test_password):
    response = client.get(url)
    assert response.status_code == 302
 
+@pytest.mark.django_db
+def test_dm_list(client, create_user, test_password):
+   user = create_user(username='someone')
+   client.login(
+      username=user.username, password=test_password
+   )
+   url = reverse('message_list')
+   response = client.get(url)
+   assert response.status_code == 200
 
+@pytest.mark.django_db
+def test_dm_form(client, create_user, test_password, auto_login_user):
+   url = reverse('direct_message')
+   data = {
+      'text': 'This is the best post ever'
+   }
+   client, test_user = auto_login_user()
+   response = client.post(url, data=data)
+   assert response.status_code == 302
+
+@pytest.mark.django_db
+def test_convo_detail(client, create_user, test_password):
+   user1 = create_user(username='someone')
+   user2 = create_user(username='noone')
+   client.login(
+      username=user1.username, password=test_password
+   )
+   this_convo = Conversations.objects.create()
+   this_convo.recipient.add(user1, user2)
+   this_convo.marked_as_new.add(user1, user2)
+   this_convo.save()
+   message = Direct_Message.objects.create(text='hi', author=user1, conversation=this_convo, send_date=timezone.now())
+   url = reverse('conversation_detail', kwargs={'pk': this_convo.pk})
+   response = client.get(url)
+   assert response.status_code == 200
