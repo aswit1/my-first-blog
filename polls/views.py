@@ -4,12 +4,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from polls.forms import PollForm, Pollv2Form, QuestionForm, Pollv3Form
 from polls.models import Poll, Pollv2, PollQ
+from django.views.generic.list import ListView
 
 
 # Create your views here.
-def poll_list(request):
-    polls = Pollv2.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'polls/poll_list.html', {'polls': polls})
+# def pollv2_list(request):
+#     polls = Pollv2.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+#     return render(request, 'polls/pollv2_list.html', {'polls': polls})
+
+class Pollv2ListView(ListView):
+    model = Pollv2
 
 def poll_vote(request, pk):
     poll = get_object_or_404(Pollv2, pk=pk)
@@ -42,9 +46,9 @@ def poll_delete(request, pk):
     this_poll = get_object_or_404(Pollv2, pk=pk)
     if request.user != this_poll.author and request.user.is_superuser is False:
         messages.add_message(request, messages.ERROR, "You can't do that.")
-        return redirect('poll_list', pk=this_poll.pk)
+        return redirect('pollv2_list', pk=this_poll.pk)
     this_poll.delete()
-    return redirect('poll_list')
+    return redirect('pollv2_list')
 
 def poll_createv2(request):
     if request.method == "POST":
@@ -80,7 +84,7 @@ def options_delete(request, pk):
     poll = this_option.poll
     if request.user != poll.author and request.user.is_superuser is False:
         messages.add_message(request, messages.ERROR, "You can't do that.")
-        return redirect('poll_list', pk=poll.pk)
+        return redirect('pollv2_list', pk=poll.pk)
     this_option.delete()
     return redirect('poll_detailv2', pk=poll.pk)
 

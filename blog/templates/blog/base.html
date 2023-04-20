@@ -27,13 +27,14 @@
                 <div class="collapse navbar-collapse" id="navbarsExample03">
                     <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                         <li class="nav-item">
+{#                            <a class="nav-link active" aria-current="page" href="{% url 'alex_post_list' %}">Main Blog</a>#}
                             <a class="nav-link active" aria-current="page" href="{% url 'alex_post_list' %}">Main Blog</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'post_list' %}">Community Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'poll_list' %}">Polls</a>
+                            <a class="nav-link active" href="{% url 'pollv2_list' %}">Polls</a>
                         </li>
                         {% if user.is_authenticated %}
                         <li class="nav-item">

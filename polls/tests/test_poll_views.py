@@ -31,8 +31,8 @@ def test_new_poll_post(client,create_user,test_password, auto_login_user):
    assert Pollv2.objects.filter(published_date__exact=None).count() == 0
 
 @pytest.mark.django_db
-def test_poll_list(client):
-   url = reverse('poll_list')
+def test_pollv2_list(client):
+   url = reverse('pollv2_list')
    response = client.get(url)
    assert response.status_code == 200
 

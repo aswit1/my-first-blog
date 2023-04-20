@@ -7,7 +7,7 @@
               Add New Poll
           </a>
      {% endif %}
-    {% for poll in polls %}
+    {% for poll in object_list %}
             <div class="card-body mt-3">
                 <div class="row">
                    <div class="col-8">
@@ -31,7 +31,7 @@
 {% endfor %}
 
         <script>
-            {% for each_poll in polls %}
+            {% for each_poll in object_list %}
                   const ctx{{ each_poll.pk }} = document.getElementById('myChart{{ each_poll.pk }}');
 
                   var this_chart{{ each_poll.pk }} = new Chart(ctx{{ each_poll.pk }}, {

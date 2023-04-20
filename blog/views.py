@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .tasks import new_post_email, update_emails, comment_emails
+from django.views.generic.list import ListView
 
 
 # Create your views here.
@@ -19,14 +20,44 @@ def manual_new_post_task(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-def post_list(request):
-    posts = Post.objects.filter(blog_post=False).order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+# def post_list(request):
+#     posts = Post.objects.filter(blog_post=False).order_by('published_date')
+#     return render(request, 'blog/post_list.html', {'posts': posts})
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    blogtype = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.blogtype == 'community':
+            context["object_list"] = Post.objects.filter(blog_post=False).order_by('published_date')
+            context["page_title"] = 'Community Blog'
+        else:
+            context["object_list"] = Post.objects.filter(blog_post=True).order_by('published_date')
+            context["page_title"] = 'Main Blog'
+
+        print(self.blogtype)
+        return context
 
 
-def alex_post_list(request):
-    posts = Post.objects.filter(blog_post=True).order_by('published_date')
-    return render(request, 'blog/alex_post_list.html', {'posts': posts})
+
+
+
+# def alex_post_list(request):
+#     posts = Post.objects.filter(blog_post=True).order_by('published_date')
+#     return render(request, 'blog/alex_post_list.html', {'posts': posts})
+
+class AlexPostListView(ListView):
+    model = Post
+    template_name = 'blog/alex_post_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["posts"] = Post.objects.filter(blog_post=True).order_by('published_date')
+        return context
+
 
 
 def post_detail(request, pk):
@@ -167,8 +198,7 @@ def direct_message(request):
                 message.conversation = conversation
                 message.save()
 
-
-                conversation_match=Conversations.objects.annotate(
+                conversation_match = Conversations.objects.annotate(
                     total_members=Count('recipient'),
                     matching_members=Count('recipient', filter=Q(recipient__in=conversation.recipient.all()))
                 ).filter(
@@ -185,7 +215,6 @@ def direct_message(request):
 
                 elif len(conversation_match) > 1:
                     for each_convo in conversation_match:
-
                         message.conversation = None
                         message.save()
                         conversation.delete()
@@ -223,6 +252,7 @@ def message_list(request):
     print(my_conversations)
     return render(request, 'blog/message_list.html', {'my_conversations': my_conversations})
 
+
 def conversation_detail(request, pk):
     my_conversation = Conversations.objects.get(pk=pk)
     if request.method == "POST":
@@ -243,6 +273,3 @@ def conversation_detail(request, pk):
     my_conversation.marked_as_new.remove(request.user)
     return render(request, 'blog/conversation_detail.html',
                   {'all_messages': all_messages, 'form': form, 'my_conversation': my_conversation})
-
-
-
