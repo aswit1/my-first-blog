@@ -84,12 +84,6 @@
                           Vote
                       </a>
                    {% endif %}
-        {#            <div class="col">#}
-        {#                <button class="save btn btn-secondary">Option 1</button>#}
-        {#                <button class="save btn btn-secondary">Option 2</button>#}
-        {#                <button class="save btn btn-secondary">Option 3</button>#}
-        {#                <button class="save btn btn-secondary">Option 4</button>#}
-        {#            </div>#}
                 </div>
             </article>
         </div>
@@ -99,42 +93,6 @@
         </div>
 
     </div>
-
-
-
-{#    <script>#}
-{#$(document).ready(function(){#}
-    {#import { Colors } from 'chart.js'#}
-{##}
-{#    var ctx = document.getElementById('myChart').getContext('2d');#}
-{##}
-{#    var myChart = new Chart(ctx, {#}
-{#        type: 'doughnut',#}
-{#        data: {#}
-{#              labels: [#}
-{#                  {% for each_option in options %}#}
-{#                      "{{ each_option.description }}",#}
-{#                  {% endfor %}#}
-{#              ],#}
-{#              datasets: [{#}
-{#                    label: 'All Votes',#}
-{#                    data: [#}
-{#                      {% for each_option in options %}#}
-{#                          {{ each_option.votes }},#}
-{#                      {% endfor %}#}
-{#                    ],#}
-                    {#backgroundColor: [#}
-                    {#  'rgb(255, 99, 132)',#}
-                    {#  'rgb(54, 162, 235)',#}
-                    {#  'rgb(255, 205, 86)'#}
-                    {#],#}
-{#                    hoverOffset: 4#}
-{#              }]#}
-{#            },#}
-{#    })#}
-{#});#}
-{##}
-{#</script>#}
 
 <script>
   const ctx = document.getElementById('myChart');
@@ -159,6 +117,5 @@
     },
   });
 </script>
-
 
 {% endblock %}

@@ -22,7 +22,6 @@ IS_HEROKU = "DYNO" in os.environ
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-#3m1d2ds(zyoo1272uw83n0hbwxardho+g!i8i680zdg*j%o5)'
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -92,7 +91,7 @@ USE_SQLITE=os.getenv("USE_SQLITE")
 
 
 MAX_CONN_AGE = 600
-# if USE_SQLITE=='YES':
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -109,19 +108,6 @@ if "DATABASE_URL" in os.environ:
     if "CI" in os.environ:
         DATABASES["default"]["TEST"] = DATABASES["default"]
 
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'mydatabase',
-#             'USER': 'mydatabaseuser',
-#             'PASSWORD': 'mypassword',
-#             'HOST': '127.0.0.1',
-#             'PORT': '5432',
-#         }
-#     }
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -167,10 +153,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-# EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
-
-# SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
@@ -180,8 +162,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-
-
 
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 

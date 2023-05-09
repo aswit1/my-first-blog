@@ -7,26 +7,12 @@ from polls.models import Poll, Pollv2, PollQ
 from django.views.generic.list import ListView
 
 
-# Create your views here.
-# def pollv2_list(request):
-#     polls = Pollv2.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-#     return render(request, 'polls/pollv2_list.html', {'polls': polls})
-
 class Pollv2ListView(ListView):
     model = Pollv2
 
 def poll_vote(request, pk):
     poll = get_object_or_404(Pollv2, pk=pk)
     options = PollQ.objects.filter(poll=poll)
-    # if request.method == "POST":
-    #     print(request.POST)
-    #     option = request.POST["option"]
-    #     option_object = get_object_or_404(PollQ, pk=int(option))
-    #     option_object.votes += 1
-    #     option_object.save()
-    #     messages.add_message(request, messages.INFO, f"You voted for {option_object.description}")
-    #     return redirect('poll_detailv2', poll.pk)
-
     if request.method == "POST":
         print(request.POST)
         form = Pollv3Form(request.POST,poll=poll)
@@ -37,7 +23,6 @@ def poll_vote(request, pk):
             this_question.save()
             messages.add_message(request, messages.INFO, f"You voted for {this_question.description}")
             return redirect('poll_detailv2', poll.pk)
-
     form = Pollv3Form(poll=poll)
     return render(request, 'polls/poll_vote.html', {'poll': poll, 'options': options, 'form': form})
 

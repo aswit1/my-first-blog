@@ -3,7 +3,7 @@ body,
 #base-container,
 #base-row,
 #base-col
-/*#base-container .col*/
+
 {
     height: 100%;
 }
@@ -20,7 +20,6 @@ h1 a, h2 a {
 
 body {
     padding-left: 0px;
-    /*BRENDAN*/
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -145,28 +144,20 @@ h1, h2, h3, h4 {
     display: flex;
     flex-direction: column;
     height: 100%;
-    /*background-color: red;*/
 }
 
 #chatbox{
-
     min-height: 0px;
     overflow-y:scroll;
     flex: 1 1 0;
     overflow-x:hidden;
-    /*scroll-margin-bottom: 1px;*/
     display: flex;
-    /*flex: 1 1 auto;*/
     flex-direction: column-reverse;
 }
 
-/*.message-row{*/
-/*    width: 100%;*/
-/*}*/
 
 #message_form{
     margin-bottom: 10px;
-
 }
 
 #text-message input{

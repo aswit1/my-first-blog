@@ -1,15 +1,12 @@
 from django.urls import path
 from . import views
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    # path('post/all/', views.post_list, name='post_list'),
-    # path('', views.alex_post_list, name='alex_post_list'),
-    # path('', views.AlexPostListView.as_view(), name='alex_post_list'),
-    path('post/all/', views.PostListView.as_view(blogtype='community'), name='post_list'),
-    path('', views.PostListView.as_view(blogtype='alexblog'), name='alex_post_list'),
-    path('alex_blog', views.AlexPostListView.as_view(), name='alex_post_list_view'),
-    path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('post/new/', views.post_new, name='post_new'),
+    path('', RedirectView.as_view(url="/blog/alex", permanent=False)),
+    path('blog/<str:blogtype>', views.PostListViewV2.as_view(), name='post_list_v2'),
+    path('post/<int:pk>/', views.PostDetail.as_view(), name='post_detail'),
+    path('post/new/', views.PostNewView.as_view(), name='post_new'),
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('post/<int:pk>/comment/', views.post_comment, name='comment'),
     path('post/<int:pk>/comment_delete/', views.comment_delete, name='comment_delete'),
@@ -19,6 +16,4 @@ urlpatterns = [
     path('direct_message', views.direct_message, name='direct_message'),
     path('message_list', views.message_list, name='message_list'),
     path('conversation_detail/<int:pk>/', views.conversation_detail, name='conversation_detail'),
-
-
 ]

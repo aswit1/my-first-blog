@@ -29,11 +29,6 @@ class AlexPostForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
 
-
-
-
-
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = PostComment
@@ -43,6 +38,7 @@ class CommentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
+
 
 class Direct_MessageForm(forms.ModelForm):
     class Meta:
@@ -64,17 +60,6 @@ class ConversationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
-
-    # def check_existing(self):
-    #     this_recipient = self.cleaned_data['recipient']
-    #     meep = Conversations.objects.filter(recipient__exact=this_recipient.all)
-    #     # meep = get_object_or_404(Conversations, recipient_c=this_recipient.all)
-    #     print(this_recipient, "%%%%%%%%%%%%%%%%%%%%")
-    #
-    #     # if len(Conversations.objects.filter(recipient=this_recipient)) > 0:
-    #     #     return True
-    #     # else:
-    #     #     return False
 
 
 class Reply_MessageForm(forms.ModelForm):

@@ -27,11 +27,10 @@
                 <div class="collapse navbar-collapse" id="navbarsExample03">
                     <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                         <li class="nav-item">
-{#                            <a class="nav-link active" aria-current="page" href="{% url 'alex_post_list' %}">Main Blog</a>#}
-                            <a class="nav-link active" aria-current="page" href="{% url 'alex_post_list' %}">Main Blog</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'post_list_v2' blogtype='alex'%}">Main Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'post_list' %}">Community Blog</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'post_list_v2' blogtype='community'%}">Community Blog</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'pollv2_list' %}">Polls</a>
@@ -40,7 +39,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'this_user' %}" tabindex="-1"
                                aria-disabled="true">Profile</a>
-
                         </li>
                         <li class="nav-item" id="message_link">
                               {% if new_message %}
@@ -48,17 +46,6 @@
                               {% else %}
                                 <a class="nav-link active" href="{% url 'message_list' %}" tabindex="-1" aria-disabled="true">Messages</a>
                               {% endif %}
-
-
-
-{#                            {% if nav-link.viewed %}#}
-{#                                {% for message in new_messages %}#}
-{#                                    {% if message.author == user %}#}
-{#                                        message.new_messages = False#}
-{#                                        new_message_list.remove(message.author)#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                            {% endif %}#}
                         </li>
                         {% endif %}
                         {% if request.user.is_superuser %}

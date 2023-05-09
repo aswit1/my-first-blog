@@ -1,40 +1,10 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-{#    <h1>Vote on {{ poll.title }}</h1>#}
-{#     {% if user.is_authenticated %}#}
-{#          <form method="POST" class="post-form">{% csrf_token %}#}
-{#              <select name="option">#}
-{#                  {% for option in options %}#}
-{#                      <option value="{{ option.pk }}">{{ option.description }}</option>#}
-{#                  {% endfor %}#}
-{#              </select>#}
-{#            <button type="submit" class="save btn btn-secondary">Save</button>#}
-{#          </form>#}
-{#     {% endif %}#}
-{#<br>#}
     <div>
         <div>
             <h1>Vote on {{ poll.title }}</h1>
         </div>
-{#        <div class="card-body">#}
-{#              <form method="POST" >{% csrf_token %}#}
-{#                  {% for option in options %}#}
-{#                      <div class="form-check">#}
-{#                          <input class="form-check-input" type="radio" name="option" id="option{{ option.pk }}" value="{{ option.pk }}"#}
-{#                          {% if forloop.counter == 1 %}checked{% endif %}#}
-{#                          >#}
-{#                          <label class="form-check-label" for="option{{ option.pk }}">{{ option.description }}</label>#}
-{#                      </div>#}
-{#                  {% endfor %}#}
-{#              <br>#}
-{#                <button type="submit" class="btn btn-secondary">Submit Vote!</button>#}
-{#              </form>#}
-{##}
-{#        </div>#}
-{#    </div>#}
-
-    <div>{% crispy form %}</div>
+        <div>{% crispy form %}</div>
     </div>
-
 {% endblock %}}

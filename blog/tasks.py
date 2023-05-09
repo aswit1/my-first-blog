@@ -9,32 +9,7 @@ from celery import shared_task
 from datetime import datetime
 import pytz
 
-# def new_post_email():
-#     new_posts = Post.objects.filter(new_post=True)
-#     this_message = "<ul>"
-#     for new_post in new_posts:
-#         this_message += f'<li><a href="http://localhost:8000/post/{new_post.pk}">{new_post.title}</a></li>'
-#     this_message += "</ul>"
-#     message = Mail(
-#         from_email=settings.DEFAULT_FROM_EMAIL,
-#         to_emails='switaj.alexandria@olsohio.org',
-#         subject='New Posts',
-#         html_content=this_message
-#     )
-#     try:
-#         sg = SendGridAPIClient(settings.EMAIL_HOST_PASSWORD)
-#         response = sg.send(message)
-#         code, body, headers = response.status_code, response.body, response.headers
-#         print(f"Response Code: {code} ")
-#         print(f"Response Body: {body} ")
-#         print(f"Response Headers: {headers} ")
-#         print("Message Sent!")
-#         # return str(response.status_code)
-#         for post in new_posts:
-#             post.new_post=False
-#             post.save()
-#     except Exception as e:
-#         print("Error: {0}".format(e))
+
 @shared_task
 def update_emails():
     email_user_list = []
@@ -43,7 +18,6 @@ def update_emails():
         return "no new posts"
     users = UserProfile.objects.all()
     if len(users) > 0:
-
         for user in users:
             if user.email_updates is True:
                 email_user_list.append(user.user.email)
@@ -64,7 +38,6 @@ def new_post_email(email_address):
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=email_address,
         subject='New Posts',
-        # html_content=this_message
     )
     message.dynamic_template_data = {
         "new_posts": this_message
@@ -88,14 +61,11 @@ def comment_emails(pk, email_address):
     new_comment = PostComment.objects.get(pk=pk)
     this_post = new_comment.post
     this_user = this_post.author.username
-
-
     post_url = f'{settings.SITE_URL}/post/{new_comment.pk}'
     commenter = new_comment.author.username
     comment_time = new_comment.published_date
     comment_time = comment_time.astimezone(pytz.timezone('America/New_York'))
     comment_time = comment_time.strftime("%I:%M %p")
-
     message = Mail(
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=email_address,
@@ -108,7 +78,6 @@ def comment_emails(pk, email_address):
         "comment_time": comment_time,
         "this_user": this_user,
     }
-
     message.template_id = "d-08e5519f4f8a4bef9189d904eb02c91f"
 
     try:
@@ -122,7 +91,3 @@ def comment_emails(pk, email_address):
 
     except Exception as e:
         print("Error: {0}".format(e))
-
-
-
-

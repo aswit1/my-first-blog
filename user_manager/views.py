@@ -3,14 +3,11 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-
 from mysite import settings
 from user_manager.forms import CustomUserCreationForm, UserProfileEditForm, UserEditForm
 from user_manager.models import UserProfile, Weather
 import requests
-
 from user_manager.tasks import get_weather
-
 
 # Create your views here.
 def all_users(request):
@@ -20,9 +17,11 @@ def all_users(request):
     user_profiles = UserProfile.objects.all()
     return render(request, 'user_manager/all_users.html', {'user_profiles': user_profiles})
 
+
 def this_user(request):
     this_current_user, created = UserProfile.objects.get_or_create(user=request.user)
     return render(request, 'user_manager/this_user.html', {'this_current_user': this_current_user})
+
 
 def user_profile_edit(request):
     this_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -59,6 +58,7 @@ def edit_user_profile(request, pk):
     this_user_form = UserEditForm(instance=this_user_profile.user)
     return render(request, 'user_manager/user_edit.html', {'this_form': this_form, 'this_user_form': this_user_form})
 
+
 def delete_user(request, pk):
     this_user = User.objects.get(pk=pk)
     if request.method == "POST":
@@ -66,6 +66,7 @@ def delete_user(request, pk):
         this_user.delete()
         return redirect('all_users')
     return render(request, 'user_manager/user_delete.html', {'this_user': this_user})
+
 
 def register(request):
     if request.method == "GET":
@@ -86,6 +87,7 @@ def register(request):
                 request, "user_manager/register.html",
                 {"form": CustomUserCreationForm}
             )
+
 
 def update_weather_view(request):
     get_weather.delay()

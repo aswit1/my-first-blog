@@ -41,13 +41,10 @@ class QuestionForm(forms.ModelForm):
 class Pollv3Form(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        poll = kwargs.pop('poll')                                                                # We had to put it here before we call super()
+        poll = kwargs.pop('poll')
         super().__init__(*args, **kwargs)
         poll_options = PollQ.objects.filter(poll=poll)
-        self.fields['my_vote'] = ModelChoiceField(queryset=poll_options,widget=forms.RadioSelect) # Adds the field and widget
+        self.fields['my_vote'] = ModelChoiceField(queryset=poll_options,widget=forms.RadioSelect)
 
-        self.helper = FormHelper()                                                                # The stuff above is regular django,
-        self.helper.add_input(Submit('submit', 'Submit'))                                         # the only thing crispy forms does for us
-                                                                                                  # here is add the submit button
-
-
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Submit'))

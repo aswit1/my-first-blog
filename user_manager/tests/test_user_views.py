@@ -2,7 +2,6 @@ import pytest
 from django.urls import reverse
 from user_manager.models import UserProfile
 
-
 @pytest.mark.django_db
 def test_user_detail(client, create_user, django_user_model, test_password):
     user = create_user(username='someone')
@@ -12,7 +11,6 @@ def test_user_detail(client, create_user, django_user_model, test_password):
     url = reverse('this_user')
     response = client.get(url)
     assert response.status_code == 200
-    # assert 'someone' in response.content
 
 @pytest.mark.django_db
 def test_all_users_detail(client, create_user, django_user_model, test_password):
@@ -23,7 +21,6 @@ def test_all_users_detail(client, create_user, django_user_model, test_password)
     url = reverse('all_users')
     response = client.get(url)
     assert response.status_code == 200
-
 
 @pytest.mark.django_db
 def test_user_profile_edit(client, create_user, test_password):

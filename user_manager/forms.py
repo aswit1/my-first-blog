@@ -5,7 +5,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import DateInput, DateField, SelectDateWidget
-
 from .models import UserProfile
 
 
@@ -17,6 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
+
 
 class CustomLoginForm(AuthenticationForm):
 
@@ -40,9 +40,6 @@ class UserProfileEditForm(forms.ModelForm):
                 InlineCheckboxes('text_updates', 'email_updates'),
             )
         )
-
-
-
 
 
 class UserEditForm(forms.ModelForm):

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Q, Count
 from django.utils import timezone
-
 from user_manager.models import Weather, UserProfile
 from . import models
 from .models import Post, PostComment, Direct_Message, Conversations
@@ -12,75 +11,56 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .tasks import new_post_email, update_emails, comment_emails
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
 
 
-# Create your views here.
 def manual_new_post_task(request):
     update_emails()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# def post_list(request):
-#     posts = Post.objects.filter(blog_post=False).order_by('published_date')
-#     return render(request, 'blog/post_list.html', {'posts': posts})
-
-class PostListView(ListView):
+class PostListViewV2(ListView):
     model = Post
     template_name = 'blog/post_list.html'
-    blogtype = None
 
     def get_context_data(self, **kwargs):
+        print("This is version 2")
         context = super().get_context_data(**kwargs)
-        if self.blogtype == 'community':
+
+        if self.kwargs['blogtype'] == 'community':
             context["object_list"] = Post.objects.filter(blog_post=False).order_by('published_date')
             context["page_title"] = 'Community Blog'
         else:
             context["object_list"] = Post.objects.filter(blog_post=True).order_by('published_date')
             context["page_title"] = 'Main Blog'
-
-        print(self.blogtype)
         return context
 
 
-
-
-
-# def alex_post_list(request):
-#     posts = Post.objects.filter(blog_post=True).order_by('published_date')
-#     return render(request, 'blog/alex_post_list.html', {'posts': posts})
-
-class AlexPostListView(ListView):
+class PostDetail(DetailView):
     model = Post
-    template_name = 'blog/alex_post_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["posts"] = Post.objects.filter(blog_post=True).order_by('published_date')
-        return context
 
 
+class PostNewView(CreateView, LoginRequiredMixin):
+    model = Post
+    template_name = 'blog/post_edit.html'
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    comments = PostComment.objects.filter(post=post)
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
+    def get_form_class(self):
+        if self.request.user.username == 'aswit':
+            return AlexPostForm
+        else:
+            return PostForm
 
+    def get_success_url(self):
+        return reverse('post_detail', args={self.object.pk})
 
-@login_required()
-def post_new(request):
-    if request.method == "POST":
-        form = AlexPostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    if request.user.username == 'aswit':
-        form = AlexPostForm()
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+    def form_valid(self, form):
+        response = super(PostNewView, self).form_valid(form)
+        self.object.author = self.request.user
+        self.object.save()
+        return response
 
 
 @login_required()
@@ -112,7 +92,6 @@ def post_comment(request, pk):
             post_comment = form.save(commit=False)
             post_comment.author = request.user
             post_comment.post = this_post
-            # post_comment.publish()
             post_comment.published_date = timezone.now()
             post_comment.save()
             post_author_email = this_post.author.email
@@ -132,16 +111,16 @@ def post_delete(request, pk):
         this_post = get_object_or_404(Post, pk=pk)
         if request.user != this_post.author and request.user.is_superuser is False:
             messages.add_message(request, messages.ERROR, "You can't do that.")
-            return redirect('alex_post_list', pk=this_post.pk)
+            return redirect('post_list_v2', blogtype='alex', pk=this_post.pk)
         this_post.delete()
-        return redirect('alex_post_list')
+        return redirect('post_list_v2', blogtype='alex')
     if this_post in community_posts:
         this_post = get_object_or_404(Post, pk=pk)
         if request.user != this_post.author and request.user.is_superuser is False:
             messages.add_message(request, messages.ERROR, "You can't do that.")
-            return redirect('post_list', pk=this_post.pk)
+            return redirect('post_list_v2', blogtype='community', pk=this_post.pk)
         this_post.delete()
-        return redirect('post_list')
+        return redirect('post_list_v2', blogtype='community')
 
 
 @login_required()
@@ -228,23 +207,6 @@ def direct_message(request):
         form = Direct_MessageForm()
         form2 = ConversationForm()
     return render(request, 'blog/direct_message.html', {'form': form, 'form2': form2})
-
-
-# def reply_message(request):
-#     if request.method == "POST":
-#         form = Reply_MessageForm(request.POST)
-#         if form.is_valid():
-#             reply_message = form.save(commit=False)
-#             reply_message.reply_recipient = dmessage.author
-#             reply_message.send_date = timezone.now()
-#             reply_message.author = request.user
-#             reply_message.save()
-#             form.save_m2m()
-#             messages.add_message(request, messages.SUCCESS, "You sent reply!")
-#             return redirect('message_list')
-#     else:
-#         form = Reply_MessageForm()
-#     return render(request, 'blog/reply_message.html', {'form': form})
 
 
 def message_list(request):

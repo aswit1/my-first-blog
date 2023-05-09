@@ -15,7 +15,7 @@ def test_user_create():
 
 @pytest.mark.django_db
 def test_home(client):
-   url = reverse('alex_post_list')
+   url = reverse('post_list_v2', blogtype='alex')
    response = client.get(url)
    assert response.status_code == 200
 
