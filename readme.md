@@ -19,6 +19,8 @@ is working properly.
 - DEFAULT_FROM_EMAIL
 - and WEATHER_API_KEY
 
+#### Celery also needs to be set up to run specific tasks in this project...
+
 # Deployment Steps:
 ### On development machine:
 - pip freeze >> requirements.txt (only if you've newly installed packages)
