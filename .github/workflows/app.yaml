@@ -47,6 +47,4 @@ jobs:
         pytest
       env:
         # The hostname used to communicate with the Redis service container
-        REDIS_HOST: redis
-        # The default Redis port
-        REDIS_PORT: 6379
+        CELERY_BROKER_URL: redis://redis:6379
