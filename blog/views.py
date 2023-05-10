@@ -60,6 +60,7 @@ class PostNewView(CreateView, LoginRequiredMixin):
         response = super(PostNewView, self).form_valid(form)
         self.object.author = self.request.user
         self.object.save()
+        self.object.publish()
         return response
 
 

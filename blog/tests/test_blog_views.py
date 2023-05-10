@@ -15,13 +15,13 @@ def test_user_create():
 
 @pytest.mark.django_db
 def test_home(client):
-   url = reverse('post_list_v2', blogtype='alex')
+   url = '/blog/alex'
    response = client.get(url)
    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_community(client):
-   url = reverse('post_list')
+   url = '/blog/community'
    response = client.get(url)
    assert response.status_code == 200
 
@@ -47,7 +47,6 @@ def test_blog_post(client,create_user,test_password,auto_login_user):
    assert response.status_code == 302
    assert Post.objects.filter(pk=1).count() == 1
    assert Post.objects.filter(author=test_user).count() == 1
-
    assert Post.objects.filter(published_date__exact=None).count() == 0
 
 @pytest.mark.django_db
