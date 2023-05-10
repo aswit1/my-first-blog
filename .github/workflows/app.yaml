@@ -2,7 +2,7 @@ name: pytest
 
 env:
   SECRET_KEY: 'hello_world'
-  CELERY_BROKER_URL: redis://redis:6379
+  CELERY_BROKER_URL: redis://redis
 
 
 on: [push,pull_request]
