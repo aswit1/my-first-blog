@@ -2,8 +2,7 @@ name: pytest
 
 env:
   SECRET_KEY: 'hello_world'
-  CELERY_BROKER_URL: redis://localhost
-
+  CELERY_BROKER_URL: redis://localhost:6379
 
 on: [push,pull_request]
 
@@ -49,12 +48,7 @@ jobs:
     - name: Run pytest
       run: | 
         pytest
-      env:
-          # The hostname used to communicate with the Redis service container
-          REDIS_HOST: redis
-          # The default Redis port
-          REDIS_PORT: 6379
-#          CELERY_BROKER_URL: redis://redis
+
 
 
         
