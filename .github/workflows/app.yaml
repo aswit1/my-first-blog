@@ -54,7 +54,7 @@ jobs:
           REDIS_HOST: redis
           # The default Redis port
           REDIS_PORT: 6379
-          CELERY_BROKER_URL: redis://redis
+#          CELERY_BROKER_URL: redis://redis
 
 
         
