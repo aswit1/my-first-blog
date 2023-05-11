@@ -15,18 +15,18 @@ is working properly.
 ###
 ### How to set up the project from Github:
 - Start by creating a new folder
-- Open a Command Prompt and use cd (name of folder)
-- Copy the link from the Github  clone page and type: git clone (link)
-- Use, cd (my-first-blog), to get into the blog in the folder
-- Type, python -m venv myenv, to set up your virtual environment
-- Then, to activate your virtual environment type: \myenv\Scripts\activate
+- Open a Command Prompt and use `cd (name of folder)`
+- Copy the link from the Github  clone page and type: `git clone https://github.com/aswit1/my-first-blog.git`
+- Use, `cd my-first-blog`, to get into the blog in the folder
+- Type, `python -m venv myenv`, to set up your virtual environment
+- Then, to activate your virtual environment type: `myenv\Scripts\activate`
   - Make sure it says (myenv) in the next line on the command prompt
-- Type: pip install -r requirements.txt
+- Type: `pip install -r requirements.txt`
 - Then, to temporarily set an environmental variable for your CURRENT command prompt session:
-  - Type: set SECRET_KEY=hellothere
+  - Type: `set SECRET_KEY=hellothere`
   - This will expire when you close the command prompt
-- Type: python manage.py migrate
-- Then: python manage.py runserver
+- Type: `python manage.py migrate`
+- Then: `python manage.py runserver`
 - Finally, you can copy the link pasted by the runserver command into your browser, which will open the main site.
 
 ### 
