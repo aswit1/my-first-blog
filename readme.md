@@ -12,6 +12,23 @@ the site. These features include the weather and email tests. The site displays 
 the test link if the weather is not updating correctly, and the email test link sends an email to the users that
 have allowed it in their profile if there are any new posts, which should be sending automatically if everything
 is working properly.
+### 
+Features:
+- Admin Site (In Admin Tools)
+- Admin Celery Worker testers (In Admin Tools)
+- User Manager (In Admin Tools)
+- User Profile Page
+- Direct Messages Feature
+- Polls Feature
+  - Includes Posting New Polls and Voting
+- Community Blog Feature
+  - Includes Posting, Editing, Commenting
+- Main Blog Feature
+  - Includes Admin Posting and Editing and Community Commenting
+- Weather Display Feature
+- User System
+  - Create New Users (Register), Log In and Log Out
+  - View Special Features only when Logged In
 ###
 ### How to set up the project from Github:
 - Start by creating a new folder
