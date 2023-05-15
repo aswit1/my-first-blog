@@ -28,6 +28,7 @@ services:
       - SECRET_KEY="this_is_your_secret_key"
       - CELERY_BROKER_URL=redis://redis
       - DEBUG=True
+      - USE_DOCKER=True
       - TIME_ZONE=UTC
       - USE_SQLITE=False
       - SITE_URL=
