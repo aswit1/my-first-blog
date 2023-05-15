@@ -8,7 +8,9 @@ from user_manager.models import Weather
 def get_weather():
     print("starting task**************************************************************************")
     api_key = settings.WEATHER_API_KEY
-    api_call = f'https://api.openweathermap.org/data/2.5/weather?lat=40.7595&lon=-82.5902&appid={api_key}&units=imperial'
+    weather_latitude = settings.WEATHER_LATITUDE
+    weather_longitude = settings.WEATHER_LONGITUDE
+    api_call = f'https://api.openweathermap.org/data/2.5/weather?lat={weather_latitude}&lon={weather_longitude}&appid={api_key}&units=imperial'
     response = requests.get(api_call)
     json_data = response.json()
     print(json_data['main']['temp'])
