@@ -1,0 +1,76 @@
+version: '3'
+
+volumes:
+  postgres_data: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: aswit_django
+    container_name: aswit_django
+    platform: linux/x86_64
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app:z
+    ports:
+      - "8000:8000"
+    command: ./docker-start-commands/django-start
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=local_database
+      - DB_USER=local_user
+      - DB_PASSWORD=local_password
+      - DB_PORT=5432
+      - SECRET_KEY="this_is_your_secret_key"
+      - CELERY_BROKER_URL=redis://redis
+      - DEBUG=True
+      - USE_DOCKER=True
+      - TIME_ZONE=UTC
+      - USE_SQLITE=False
+      - SITE_URL=
+      - DEFAULT_FROM_EMAIL=you@example.com
+      - WEATHER_API_KEY="My_Open_weather_map_api_key"   # Open Weather Map API Key
+      - EMAIL_HOST_PASSWORD="My_Sendgrid_API_KEY"       # Sendgrid API Key
+
+  postgres:
+    image: postgres:14
+    container_name: aswit_postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:Z
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=local_database
+      - POSTGRES_USER=local_user
+      - POSTGRES_PASSWORD=local_password
+      - POSTGRES_PORT=5432
+
+
+  redis:
+    image: redis:6
+    container_name: aswit_redis
+
+  celeryworker:
+    <<: *django
+    image: aswit_django
+    container_name: aswit_celery_worker
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: celery -A blog.celery_app worker -l INFO
+
+  celerybeat:
+    <<: *django
+    image: aswit_django
+    container_name: aswit_celery_beat
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: celery -A blog.celery_app beat -l INFO
